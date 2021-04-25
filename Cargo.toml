@@ -1,0 +1,35 @@
+[[bin]]
+name = "crypto-candlesticks-rust"
+
+[[test]]
+name = "crypto-candlesticks-rust-test"
+path = "./test/test_config.rs"
+
+[package]
+name = "crypto-candlesticks-rust"
+version = "0.1.0"
+authors = ["Pedro Torres <corfucinas@protonmail.com>"]
+license = "MIT"
+edition = "2018"
+description = "Download candlestick data fast & easy for analysis"
+documentation = ""
+repository = ""
+readme = "README.md"
+keywords = ["cryptocurrency", "candlesticks", "download", "data", "ohlc"]
+categories = ["command-line-utilities", "cryptography::cryptocurrencies"]
+
+[profile.release]
+opt-level = 'z'  # Optimize for size.
+lto = true
+panic = "abort"
+codegen-units = 1
+
+[dependencies]
+chrono = "0.4.19"
+clap = "3.0.0-beta.2"
+colorful = "0.2.1"
+comfy-table = "2.1.0"
+reqwest = { version = "0.11.3", features = ["blocking", "json"] }
+rusqlite = { version = "0.25.1", features = ["bundled"] }
+serde = { version = "1.0.125", features = ["derive"] }
+simple_excel_writer = "0.1.7"

@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: check-yaml
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-toml
+      - id: fix-encoding-pragma
+      - id: check-builtin-literals
+      - id: check-byte-order-marker
+      - id: check-executables-have-shebangs
+      - id: detect-private-key
+      - id: trailing-whitespace
+      - id: double-quote-string-fixer
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: clippy
+      - id: fmt
+        args: ["--verbose", "--edition", "2018"]
+      - id: cargo-check
+        args: ["--verbose"]
+# language: rust
+# rust:
+#   - stable
+#   - beta
+# before_script:
+#   - rustup component add clippy
+# script:
+#   - cargo clippy
+#   # if you want the build job to fail when encountering warnings, use
+#   - cargo clippy -- -D warnings
+#   # in order to also check tests and non-default crate features, use
+#   - cargo clippy --all-targets --all-features -- -D warnings
+#   - cargo test
+#   # etc.

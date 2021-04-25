@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: "/"
+    schedule:
+      interval: weekly
+    target-branch: master
+    labels:
+      - dependencies
+      - dependabot
+    commit-message:
+      prefix: chore
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels:
+      - github-actions
+    commit-message:
+      prefix: chore
