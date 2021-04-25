@@ -10,7 +10,7 @@ use chrono::{TimeZone, Utc};
 use clap::{App, Arg};
 use colorful::Colorful;
 use get_data::get_data;
-use std::str::FromStr;
+use std::{io::Error, str::FromStr};
 use std::{thread, time};
 use symbols::{INTERVALS, LIST_OF_CURRENCY};
 use time::Duration;
@@ -193,7 +193,7 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
     (start_date_parsed, end_date_parsed)
 }
 /// Reads the arguments from stdin.
-pub fn main() -> Result<(), ()> {
+pub fn main() -> Result<(), Error> {
     let app_instance: clap::ArgMatches = App::new("crypto-candlesticks-rust")
         .author("Pedro Torres")
         .version("0.1.0")
@@ -206,78 +206,71 @@ pub fn main() -> Result<(), ()> {
         .arg(end_date())
         .get_matches();
 
-    Ok(
-        match (
-            app_instance.value_of("symbol"),
-            app_instance.value_of("base_currency"),
-            app_instance.value_of("interval"),
-            app_instance.value_of("start_date"),
-            app_instance.value_of("end_date"),
-        ) {
-            (
-                Some(symbol),
-                Some(base_currency),
-                Some(interval),
-                Some(start_date),
-                Some(end_date),
-            ) => {
-                if !check_symbol(symbol) {
-                    let message: String = format!(
-                        "Data could not be downloaded ❌, check if {} is listed on Bitfinex",
-                        symbol
-                    );
-                    panic!("{}", message.red());
-                }
-                if !check_base_currency(base_currency) {
-                    let message: String = format!("Data could not be downloaded ❌, check '{}' is listed on Bitfinex as a base pair. The available base currencies are {:#?}",
+    match (
+        app_instance.value_of("symbol"),
+        app_instance.value_of("base_currency"),
+        app_instance.value_of("interval"),
+        app_instance.value_of("start_date"),
+        app_instance.value_of("end_date"),
+    ) {
+        (Some(symbol), Some(base_currency), Some(interval), Some(start_date), Some(end_date)) => {
+            if !check_symbol(symbol) {
+                let message: String = format!(
+                    "Data could not be downloaded ❌, check if {} is listed on Bitfinex",
+                    symbol
+                );
+                panic!("{}", message.red());
+            }
+            if !check_base_currency(base_currency) {
+                let message: String = format!("Data could not be downloaded ❌, check '{}' is listed on Bitfinex as a base pair. The available base currencies are {:#?}",
                 base_currency,
                 LIST_OF_CURRENCY);
-                    panic!("{}", message.red());
-                }
-                if !check_interval(interval) {
-                    let message: String = format!("Data could not be downloaded ❌, the following intervals are available {:#?}, you have selected {}",
+                panic!("{}", message.red());
+            }
+            if !check_interval(interval) {
+                let message: String = format!("Data could not be downloaded ❌, the following intervals are available {:#?}, you have selected {}",
                 INTERVALS,
                 interval);
-                    panic!("{}", message.red());
-                }
-                let (parsed_start_date, parsed_end_date) =
-                    check_and_transform_dates(start_date, end_date);
-                if (symbol == "BTC")
-                    & (base_currency == "USD")
-                    & (interval == "1D")
-                    & (parsed_start_date == 1604188801000)
-                    & (parsed_end_date == 1609459202000)
-                {
-                    let default_message_warning: &str =
-                        "USING DEFAULT VALUES: run --help to know what arguments you can pass";
-                    println!("{}", default_message_warning.yellow());
-                    thread::sleep(Duration::from_secs(1));
-                    println!("{}", "3...");
-                    thread::sleep(Duration::from_secs(1));
-                    println!("{}", "2...");
-                    thread::sleep(Duration::from_secs(1));
-                    println!("{}", "1...");
-                }
-                get_data(
-                    symbol,
-                    base_currency,
-                    interval,
-                    parsed_start_date,
-                    parsed_end_date,
-                )
+                panic!("{}", message.red());
             }
-            _ => {
-                let error_message: &str = "Error: Please make sure your inputs are correct.";
-                let help_message: &str = "Run with '-- --help' for the arguments";
-                println!("{}", error_message.red());
-                println!("{}", help_message);
+            let (parsed_start_date, parsed_end_date) =
+                check_and_transform_dates(start_date, end_date);
+            if (symbol == "BTC")
+                & (base_currency == "USD")
+                & (interval == "1D")
+                & (parsed_start_date == 1604188801000)
+                & (parsed_end_date == 1609459202000)
+            {
+                let default_message_warning: &str =
+                    "USING DEFAULT VALUES: run --help to know what arguments you can pass";
+                println!("{}", default_message_warning.yellow());
+                thread::sleep(Duration::from_secs(1));
+                println!("3...");
+                thread::sleep(Duration::from_secs(1));
+                println!("2...");
+                thread::sleep(Duration::from_secs(1));
+                println!("1...");
             }
-        },
-    )
+            get_data(
+                symbol,
+                base_currency,
+                interval,
+                parsed_start_date,
+                parsed_end_date,
+            )
+        }
+        _ => {
+            let error_message: &str = "Error: Please make sure your inputs are correct.";
+            let help_message: &str = "Run with '-- --help' for the arguments";
+            println!("{}", error_message.red());
+            println!("{}", help_message);
+        }
+    };
+    Ok(())
 }
 
 #[test]
-fn check() {
+fn check_main() {
     use self::main as entry_point;
-    assert_eq!(Ok(()), entry_point())
+    entry_point().unwrap();
 }
