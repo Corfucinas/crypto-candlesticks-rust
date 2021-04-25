@@ -50,4 +50,4 @@ jobs:
 
       - name: clippy & tests
         run: |
-          cargo clippy -- -D warnings && cargo test
+          cargo clippy -- -D clippy::all && cargo test
