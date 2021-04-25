@@ -16,7 +16,7 @@ jobs:
           toolchain: stable
 
       - name: Cache cargo registry
-        uses: actions/cache@v2.1.4
+        uses: actions/cache@v2.1.5
         with:
           path: ~/.cargo/registry
           # Add date to the cache to keep it up to date
@@ -27,7 +27,7 @@ jobs:
             ubuntu-latest-stable-cargo-registry-
 
       - name: Cache cargo index
-        uses: actions/cache@v2.1.4
+        uses: actions/cache@v2.1.5
         with:
           path: ~/.cargo/git
           # Add date to the cache to keep it up to date
@@ -38,7 +38,7 @@ jobs:
             ubuntu-latest-stable-cargo-index-
 
       - name: Cache core cargo target
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: target
           # Add date to the cache to keep it up to date
