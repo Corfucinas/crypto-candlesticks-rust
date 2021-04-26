@@ -1,6 +1,6 @@
 //! Print a table to the console.
 
-use crate::bitfinex::CandleData;
+use crate::bitfinex::connector::CandleData;
 use chrono::{TimeZone, Utc};
 use comfy_table::{
     presets::ASCII_NO_BORDERS, presets::UTF8_FULL, Attribute, Cell, CellAlignment, Color,

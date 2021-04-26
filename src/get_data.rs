@@ -1,6 +1,6 @@
 //! The Crypto candlesticks engine.
 use crate::{
-    bitfinex::{Bitfinex, CandleData},
+    bitfinex::connector::{Bitfinex, CandleData},
     database::insert_candlesticks,
     text_console::{setup_table, write_to_column},
 };

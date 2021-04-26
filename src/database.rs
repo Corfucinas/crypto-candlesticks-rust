@@ -1,7 +1,7 @@
 //! Sqlite database class.
 use rusqlite::{params, Connection};
 
-use crate::bitfinex::CandleData;
+use crate::bitfinex::connector::CandleData;
 
 #[derive(Debug)]
 pub struct SqlDatabase {

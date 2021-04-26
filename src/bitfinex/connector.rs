@@ -20,12 +20,6 @@ pub enum FloatOrInt {
     Float(f64),
 }
 
-impl Display for CandleData {
-    fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "{}", self)
-    }
-}
-
 impl Display for FloatOrInt {
     fn fmt(&self, f: &mut Formatter) -> Result {
         match self {

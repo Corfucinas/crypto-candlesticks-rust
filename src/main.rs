@@ -5,14 +5,13 @@ mod database;
 mod get_data;
 mod symbols;
 mod text_console;
-use bitfinex::Bitfinex;
+use bitfinex::connector::Bitfinex;
 use chrono::{TimeZone, Utc};
 use clap::{App, Arg};
 use colorful::Colorful;
 use get_data::get_data;
-use std::{io::Error, str::FromStr};
-use std::{thread, time};
-use symbols::{INTERVALS, LIST_OF_CURRENCY};
+use std::{io::Error, str::FromStr, thread, time};
+use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
 use time::Duration;
 
 /// Info message -- --help

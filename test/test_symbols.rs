@@ -7,7 +7,7 @@ mod bitfinex;
 #[path = "../src/symbols/list_of_currency.rs"]
 mod list_of_currency;
 
-use bitfinex::Bitfinex;
+use bitfinex::connector::Bitfinex;
 use list_of_currency::LIST_OF_CURRENCY;
 
 #[test]
