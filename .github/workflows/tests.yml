@@ -48,6 +48,6 @@ jobs:
             ubuntu-latest-stable-cargo-core-${{ hashFiles('core/**/Cargo.toml') }}
             ubuntu-latest-stable-cargo-core-
 
-      - name: clippy & tests
+      - name: Clippy & Tests
         run: |
           cargo clippy -- -D clippy::all && cargo test
