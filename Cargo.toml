@@ -17,6 +17,13 @@ repository = "https://github.com/Corfucinas/crypto-candlesticks-rust"
 readme = "README.md"
 keywords = ["cryptocurrency", "candlesticks", "download", "data", "ohlc"]
 categories = ["command-line-utilities", "cryptography::cryptocurrencies"]
+exclude = [
+    "examples/",
+    "hex/",
+    "media/",
+    "scripts/",
+    ".github",
+]
 
 [profile.release]
 opt-level = 'z'  # Optimize for size.
