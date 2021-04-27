@@ -14,6 +14,48 @@ The data will include the `Open, High, Low, Close` of the candles and the `volum
 
 ![gif-animation](media/animation.gif)
 
+## Installation
+
+To install crypto-candlesticks-rust,
+run this command in your terminal:
+
+```bash
+   cargo install crypto-candlesticks-rust
+```
+
+Or if you can get one for the pre-compiled [binaries](https://github.com/Corfucinas/crypto-candlesticks-rust/releases)
+
+### Usage
+
+crypto-candlesticks-rust can be used the following way:
+
+```bash
+    $ crypto-candlesticks --help
+
+    USAGE:
+    crypto-candlesticks-rust --symbol <BTC> --base_currency <USDT> --interval <1m, 5, 15m, 30m, 1h, 3h, 6h, 12h, 1D, 7D, 14D, 1M> --start_date <YYYY-MM-DD> --end_date <YYYY-MM-DD>
+
+    FLAGS:
+        -h, --help       Prints help information
+        -V, --version    Prints version information
+
+    OPTIONS:
+        -s, --symbol <BTC>
+                Cryptocurrency symbol to download (ie. BTC, ETH, LTC) [default: BTC]
+
+        -b, --base_currency <USDT>
+                Cryptocurrency base trading pair [default: USD]
+
+        -i, --interval <1m, 5, 15m, 30m, 1h, 3h, 6h, 12h, 1D, 7D, 14D, 1M>
+                Interval that will be used to download the data [default: 1D]
+
+        -d, --start_date <YYYY-MM-DD>
+                Date to start downloading the data (ie. YYYY-MM-DD) [default: 2020-11-01]
+
+        -e, --end_date <YYYY-MM-DD>
+                Date up to the data will be downloaded (ie. YYYY-MM-DD) [default: 2021-01-01]
+```
+
 #### Example output for CSV ✅
 
 | Open     | Close     | High   | Low       | Volume    | Ticker  | Date       | Time     |
