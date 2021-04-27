@@ -12,7 +12,7 @@ authors = ["Pedro Torres <corfucinas@protonmail.com>"]
 license = "MIT"
 edition = "2018"
 description = "Download candlestick data fast & easy for analysis"
-documentation = ""
+documentation = "https://docs.rs/crate/crypto-candlesticks-rust/"
 repository = "https://github.com/Corfucinas/crypto-candlesticks-rust"
 readme = "README.md"
 keywords = ["cryptocurrency", "candlesticks", "download", "data", "ohlc"]
@@ -20,7 +20,8 @@ categories = ["command-line-utilities", "cryptography::cryptocurrencies"]
 exclude = [
     "examples/",
     "hex/",
-    "media/",
+    "media/crypto-candlestick-rust.mp4",
+    "media/crypto-candlestick-rust.png",
     "scripts/",
     ".github",
 ]
