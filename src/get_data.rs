@@ -1,7 +1,7 @@
 //! The Crypto candlesticks engine.
 use crate::{
-    bitfinex::connector::{Bitfinex, CandleData},
     database::insert_candlesticks,
+    exchanges::bitfinex::{Bitfinex, CandleData},
     text_console::{setup_table, write_to_column},
 };
 use chrono::{TimeZone, Utc};

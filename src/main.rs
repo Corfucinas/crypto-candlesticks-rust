@@ -1,14 +1,14 @@
 //! Command-line interface for Crypto Candlesticks.
 
-mod bitfinex;
 mod database;
+mod exchanges;
 mod get_data;
 mod symbols;
 mod text_console;
-use bitfinex::connector::Bitfinex;
 use chrono::{TimeZone, Utc};
 use clap::{App, Arg};
 use colorful::Colorful;
+use exchanges::bitfinex::Bitfinex;
 use get_data::get_data;
 use std::{io::Error, str::FromStr, thread, time};
 use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
@@ -112,7 +112,7 @@ fn end_date() -> Arg<'static> {
 
 /// After -- --help message.
 fn repo_info() -> &'static str {
-    "Question? Improvements? Feel free to open a PR or issue at: "
+    "Question? Improvements? Feel free to open a PR or issue at: https://github.com/Corfucinas/crypto-candlesticks-rust/issues"
 }
 
 /**

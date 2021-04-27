@@ -1,13 +1,13 @@
 //! Test quote currency is listed.
 
-#[path = "../src/bitfinex/mod.rs"]
+#[path = "../src/exchanges/mod.rs"]
 #[allow(dead_code)]
-mod bitfinex;
+mod exchanges;
 
 #[path = "../src/symbols/list_of_currency.rs"]
 mod list_of_currency;
 
-use bitfinex::connector::Bitfinex;
+use exchanges::bitfinex::Bitfinex;
 use list_of_currency::LIST_OF_CURRENCY;
 
 #[test]

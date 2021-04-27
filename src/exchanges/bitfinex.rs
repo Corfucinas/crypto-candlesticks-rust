@@ -129,9 +129,18 @@ impl Bitfinex<'_> {
                 println!("{}", "Cannot connect to Bitfinex, please try again".red());
                 return None;
             } else if blocking::get(url).is_ok()
-                && blocking::get(url).as_ref().unwrap().status() == StatusCode::OK
+                && blocking::get(url)
+                    .as_ref()
+                    .expect("Error downloading the data, try again")
+                    .status()
+                    == StatusCode::OK
             {
-                Some(blocking::get(url).unwrap().json::<String>().unwrap());
+                Some(
+                    blocking::get(url)
+                        .expect("Error downloading the data, try again")
+                        .json::<String>()
+                        .expect("Error parsing the data, try again"),
+                );
             }
         }
     }
@@ -146,9 +155,18 @@ impl Bitfinex<'_> {
                 println!("{}", "Cannot connect to Bitfinex, please try again".red());
                 return None;
             } else if blocking::get(url).is_ok()
-                && blocking::get(url).as_ref().unwrap().status() == StatusCode::OK
+                && blocking::get(url)
+                    .as_ref()
+                    .expect("Error downloading the data, try again")
+                    .status()
+                    == StatusCode::OK
             {
-                Some(blocking::get(url).unwrap().json::<CandleData>().unwrap());
+                Some(
+                    blocking::get(url)
+                        .expect("Error downloading the data, try again")
+                        .json::<CandleData>()
+                        .expect("Error downloading the data, try again"),
+                );
             }
         }
     }
