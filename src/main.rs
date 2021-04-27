@@ -14,7 +14,7 @@ use std::{io::Error, str::FromStr, thread, time};
 use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
 use time::Duration;
 
-/// Info message -- --help
+/// Info message -- --help.
 fn info() -> &'static str {
     "Download cryptocurrency candlestick data from Bitfinex.
     If the data is obtained successfully, it will be converted to a .csv and a sqlite3 database."

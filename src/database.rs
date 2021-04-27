@@ -19,7 +19,7 @@ impl SqlDatabase {
     }
 }
 
-/// Sqlite table schema
+/// Sqlite table schema.
 fn create_schema() -> &'static str {
     "CREATE TABLE IF NOT EXISTS Candlestick(
     ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
