@@ -30,7 +30,7 @@ Or if you can get one for the pre-compiled [binaries](https://github.com/Corfuci
 crypto-candlesticks-rust can be used the following way:
 
 ```bash
-    $ crypto-candlesticks --help
+    $ crypto-candlesticks-rust --help
 
     USAGE:
     crypto-candlesticks-rust --symbol <BTC> --base_currency <USDT> --interval <1m, 5, 15m, 30m, 1h, 3h, 6h, 12h, 1D, 7D, 14D, 1M> --start_date <YYYY-MM-DD> --end_date <YYYY-MM-DD>
