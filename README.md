@@ -26,6 +26,10 @@ run this command in your terminal:
 
 Or if you can get one for the pre-compiled [binaries](https://github.com/Corfucinas/crypto-candlesticks-rust/releases)
 
+Not for windows users:
+It is possible that Windows Defender will complain about the executable.
+The binary is packed with `cargo strip` and `UPX` after compilation.
+
 ### Usage
 
 crypto-candlesticks-rust can be used the following way:
