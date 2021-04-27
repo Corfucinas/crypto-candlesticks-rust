@@ -1,6 +1,7 @@
 # crypto-candlesticks-rust 📈
 
 [![Rust test](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/tests.yml)
+[![Docs](https://docs.rs/crypto-candlesticks-rust/badge.svg)](https://docs.rs/crypto-candlesticks-rust/badge.svg)
 
 ---
 
