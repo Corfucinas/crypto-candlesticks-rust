@@ -7,7 +7,7 @@ path = "./test/test_config.rs"
 
 [package]
 name = "crypto-candlesticks-rust"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Pedro Torres <corfucinas@protonmail.com>"]
 license = "MIT"
 edition = "2018"
