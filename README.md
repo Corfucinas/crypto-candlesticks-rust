@@ -24,7 +24,7 @@ run this command in your terminal:
    cargo install crypto-candlesticks-rust
 ```
 
-Or if you can get one for the pre-compiled [binaries](https://github.com/Corfucinas/crypto-candlesticks-rust/releases)
+Or you can get one of the pre-compiled [binaries](https://github.com/Corfucinas/crypto-candlesticks-rust/releases)
 
 Not for windows users:
 It is possible that Windows Defender will complain about the executable.
