@@ -8,9 +8,10 @@ mod text_console;
 use chrono::{TimeZone, Utc};
 use clap::{App, Arg};
 use colorful::Colorful;
+use core::panic;
 use exchanges::bitfinex::Bitfinex;
 use get_data::get_data;
-use std::{io::Error, str::FromStr, thread, time};
+use std::{error::Error, process, str::FromStr, thread, time};
 use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
 use time::Duration;
 
@@ -36,6 +37,7 @@ fn symbol() -> Arg<'static> {
         .required(true)
         .display_order(1)
         .default_value("BTC")
+        .env("symbol")
 }
 
 /**
@@ -54,6 +56,7 @@ fn base_currency() -> Arg<'static> {
         .required(true)
         .display_order(2)
         .default_value("USD")
+        .env("base_currency")
 }
 
 /**
@@ -72,6 +75,7 @@ fn interval() -> Arg<'static> {
         .required(true)
         .display_order(3)
         .default_value("1D")
+        .env("interval")
 }
 
 /**
@@ -90,6 +94,7 @@ fn start_date() -> Arg<'static> {
         .required(true)
         .display_order(4)
         .default_value("2020-11-01")
+        .env("start_date")
 }
 
 /**
@@ -108,6 +113,7 @@ fn end_date() -> Arg<'static> {
         .required(true)
         .display_order(5)
         .default_value("2021-01-01")
+        .env("end_date")
 }
 
 /// After -- --help message.
@@ -162,9 +168,24 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
     );
     let start_date_parsed: i64 = Utc
         .ymd(
-            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[0]).expect(&message),
-            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[1]).expect(&message),
-            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[2]).expect(&message),
+            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[0]).unwrap_or_else(
+                |_| {
+                    eprintln!("{}", &message);
+                    process::exit(1);
+                },
+            ),
+            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[1]).unwrap_or_else(
+                |_| {
+                    eprintln!("{}", &message);
+                    process::exit(1);
+                },
+            ),
+            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[2]).unwrap_or_else(
+                |_| {
+                    eprintln!("{}", &message);
+                    process::exit(1);
+                },
+            ),
         )
         .and_hms_milli(0, 0, 1, 0)
         .timestamp_millis()
@@ -176,9 +197,18 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
         );
     let end_date_parsed: i64 = Utc
         .ymd(
-            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[0]).expect(&message),
-            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[1]).expect(&message),
-            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[2]).expect(&message),
+            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[0]).unwrap_or_else(|_| {
+                eprintln!("{}", &message);
+                process::exit(1);
+            }),
+            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[1]).unwrap_or_else(|_| {
+                eprintln!("{}", &message);
+                process::exit(1);
+            }),
+            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[2]).unwrap_or_else(|_| {
+                eprintln!("{}", &message);
+                process::exit(1);
+            }),
         )
         .and_hms_milli(0, 0, 2, 0)
         .timestamp_millis()
@@ -192,7 +222,7 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
     (start_date_parsed, end_date_parsed)
 }
 /// Reads the arguments from stdin.
-pub fn main() -> Result<(), Error> {
+pub fn main() -> Result<(), Box<dyn Error>> {
     let app_instance: clap::ArgMatches = App::new("crypto-candlesticks-rust")
         .author("Pedro Torres")
         .version("0.1.0")
@@ -218,19 +248,22 @@ pub fn main() -> Result<(), Error> {
                     "Data could not be downloaded ❌, check if {} is listed on Bitfinex",
                     symbol
                 );
-                panic!("{}", message.red());
+                eprintln!("{}", message.red());
+                panic!();
             }
             if !check_base_currency(base_currency) {
                 let message: String = format!("Data could not be downloaded ❌, check '{}' is listed on Bitfinex as a base pair. The available base currencies are {:#?}",
                 base_currency,
                 LIST_OF_CURRENCY);
-                panic!("{}", message.red());
+                eprintln!("{}", message.red());
+                panic!();
             }
             if !check_interval(interval) {
                 let message: String = format!("Data could not be downloaded ❌, the following intervals are available {:#?}, you have selected {}",
                 INTERVALS,
                 interval);
-                panic!("{}", message.red());
+                eprintln!("{}", message.red());
+                panic!();
             }
             let (parsed_start_date, parsed_end_date) =
                 check_and_transform_dates(start_date, end_date);
@@ -263,13 +296,121 @@ pub fn main() -> Result<(), Error> {
             let help_message: &str = "Run with '-- --help' for the arguments";
             println!("{}", error_message.red());
             println!("{}", help_message);
+            process::exit(1);
         }
     };
     Ok(())
 }
 
 #[test]
-fn check_main() {
+fn main_1m() {
     use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "btc");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "1m");
+    env::set_var("start_date", "2021-01-01");
+    env::set_var("end_date", "2021-02-01");
+    entry_point().unwrap();
+}
+
+#[test]
+fn main_5m() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "eth");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "5m");
+    env::set_var("start_date", "2021-01-01");
+    env::set_var("end_date", "2021-02-01");
+    entry_point().unwrap();
+}
+
+#[test]
+fn main_15m() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "ltc");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "15m");
+    env::set_var("start_date", "2021-01-01");
+    env::set_var("end_date", "2021-02-01");
+    entry_point().unwrap();
+}
+
+#[test]
+fn main_30m() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "btc");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "30m");
+    env::set_var("start_date", "2021-01-01");
+    env::set_var("end_date", "2021-02-01");
+    entry_point().unwrap();
+}
+
+#[test]
+#[should_panic]
+fn fail_symbol() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "notbtc");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "30m");
+    env::set_var("start_date", "2021-01-01");
+    env::set_var("end_date", "2021-02-01");
+    entry_point().unwrap_err();
+}
+
+#[test]
+#[should_panic]
+fn fail_base_currency() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "btc");
+    env::set_var("base_currency", "USDR");
+    env::set_var("interval", "30m");
+    env::set_var("start_date", "2021-01-01");
+    env::set_var("end_date", "2021-02-01");
+    entry_point().unwrap();
+}
+
+#[test]
+#[should_panic]
+fn fail_interval() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "btc");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "10D");
+    env::set_var("start_date", "2021-01-01");
+    env::set_var("end_date", "2021-02-01");
+    entry_point().unwrap();
+}
+
+#[test]
+#[should_panic]
+fn fail_start_date() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "btc");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "10D");
+    env::set_var("start_date", "2021-10-01");
+    env::set_var("end_date", "2021-02-300");
+    entry_point().unwrap();
+}
+
+#[test]
+#[should_panic]
+fn fail_end_date() {
+    use self::main as entry_point;
+    use std::env;
+    env::set_var("symbol", "btc");
+    env::set_var("base_currency", "usd");
+    env::set_var("interval", "10D");
+    env::set_var("start_date", "2021-20-01");
+    env::set_var("end_date", "1980-02-01");
     entry_point().unwrap();
 }

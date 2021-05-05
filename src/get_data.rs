@@ -7,7 +7,7 @@ use crate::{
 use chrono::{TimeZone, Utc};
 use colorful::Colorful;
 use simple_excel_writer::{blank, row, CellValue, Row, Sheet, SheetWriter, Workbook};
-use std::{thread, time};
+use std::{process, thread, time};
 use time::Duration;
 
 /// Avoid getting rate limited by Bitfinex.
@@ -47,10 +47,14 @@ pub fn get_candles(
         if candlestick.is_none() {
             let panic_message: &str =
                 "Data could not be downloaded ❌, please verify your connection and try again";
-            panic!("{}", panic_message.red());
+            eprintln!("{}", panic_message.red());
+            process::exit(1)
         }
         write_to_column(ticker, interval, candle_data.clone(), setup_table());
-        candle_data.push(candlestick.expect("Could not append to datalist"));
+        candle_data.push(candlestick.unwrap_or_else(|| {
+            eprintln!("{}", "Could not append to datalist".red());
+            process::exit(1);
+        }));
         start_time = period;
         thread::sleep(Duration::from_secs_f32(RATE_LIMIT));
     }
@@ -108,14 +112,23 @@ fn write_excel(filename: String, interval: &str, parsed_data: Vec<CandleData>, t
                             .append_row(row![
                                 *open, *close, *high, *low, *volume, interval, ticker, datetime
                             ])
-                            .expect("Writing to excel failed");
+                            .unwrap_or_else(|_| {
+                                eprintln!("{}", "Writing to excel failed".red());
+                                process::exit(1);
+                            });
                     });
                 });
                 sheet_writer.append_row(row![blank!(1), blank!(1), blank!(1)])
             },
         )
-        .expect("Writing to excel failed");
-    workbook.close().expect("Writing to excel failed");
+        .unwrap_or_else(|_| {
+            eprintln!("{}", "Writing to excel failed".red());
+            process::exit(1);
+        });
+    workbook.close().unwrap_or_else(|_| {
+        eprintln!("{}", "Writing to excel failed".red());
+        process::exit(1);
+    });
 }
 
 /// Function for handling the OHLC response and conversion.

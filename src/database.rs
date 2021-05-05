@@ -1,5 +1,7 @@
 //! Sqlite database class.
+use colorful::Colorful;
 use rusqlite::{params, Connection};
+use std::process;
 
 use crate::exchanges::bitfinex::CandleData;
 
@@ -13,8 +15,10 @@ impl SqlDatabase {
     pub fn new(data_base_file: String) -> Self {
         Self {
             data_base_file: data_base_file.to_owned(),
-            conn: Connection::open(data_base_file + ".sqlite")
-                .expect("Could not write data to the database"),
+            conn: Connection::open(data_base_file + ".sqlite").unwrap_or_else(|_| {
+                eprintln!("{}", "Could not write data to the database".red());
+                process::exit(1);
+            }),
         }
     }
 }
@@ -52,7 +56,10 @@ pub fn insert_candlesticks(
     let connection: Connection = SqlDatabase::new(file_name.to_owned()).conn;
     connection
         .execute(&create_schema(), [])
-        .expect("Could not write schema the database");
+        .unwrap_or_else(|_| {
+            eprintln!("{}", "Could not write schema to the database".red());
+            process::exit(1);
+        });
 
     candlestick_info.iter().for_each(|candlestick| {
         candlestick.0.clone().into_iter().for_each(|candle_data| {
@@ -71,7 +78,10 @@ pub fn insert_candlesticks(
                         interval,
                     ],
                 )
-                .expect("Could not write to the database");
+                .unwrap_or_else(|_| {
+                    eprintln!("{}", "Could not insert data to the table".red());
+                    process::exit(1);
+                });
         });
     });
 }
