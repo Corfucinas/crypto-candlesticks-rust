@@ -53,7 +53,7 @@ pub struct Bitfinex<'a> {
     api_v2: &'a str,
 }
 
-impl Bitfinex<'_> {
+impl<'a> Bitfinex<'a> {
     pub fn new() -> Self {
         Self {
             api_v1: "https://api.bitfinex.com/v1",

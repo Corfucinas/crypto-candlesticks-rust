@@ -16,7 +16,7 @@ use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
 use time::Duration;
 
 /// Info message -- --help.
-fn info() -> &'static str {
+fn info<'a>() -> &'a str {
     "Download cryptocurrency candlestick data from Bitfinex.
     If the data is obtained successfully, it will be converted to a .csv and a sqlite3 database."
 }
@@ -27,7 +27,7 @@ Cryptocurrency symbol to download (ie. BTC, ETH, LTC).
 Full list can be obtained here => https://api.bitfinex.com/v1/symbols
 ```
 */
-fn symbol() -> Arg<'static> {
+fn symbol<'a>() -> Arg<'a> {
     Arg::new("symbol")
         .short('s')
         .long("symbol")
@@ -46,7 +46,7 @@ Cryptocurrency base trading pair.
 "USD", "UST", "EUR", "CNHT", "GBP", "JPY", "DAI", "BTC", "EOS", "ETH", "XCH", "USTF0"
 ```
 */
-fn base_currency() -> Arg<'static> {
+fn base_currency<'a>() -> Arg<'a> {
     Arg::new("base_currency")
         .short('b')
         .long("base_currency")
@@ -65,7 +65,7 @@ Interval that will be used to download the data.
 "1m, 5, 15m, 30m, 1h, 3h, 6h, 12h, 1D, 7D, 14D, 1M"
 ```
 */
-fn interval() -> Arg<'static> {
+fn interval<'a>() -> Arg<'a> {
     Arg::new("interval")
         .short('i')
         .long("interval")
@@ -84,7 +84,7 @@ Date to start downloading the data (ie. YYYY-MM-DD).
 2018-01-01
 ```
 */
-fn start_date() -> Arg<'static> {
+fn start_date<'a>() -> Arg<'a> {
     Arg::new("start_date")
         .short('d')
         .long("start_date")
@@ -103,7 +103,7 @@ Date up to the data will be downloaded (ie. YYYY-MM-DD).
 2021-01-01
 ```
 */
-fn end_date() -> Arg<'static> {
+fn end_date<'a>() -> Arg<'a> {
     Arg::new("end_date")
         .short('e')
         .long("end_date")
@@ -117,7 +117,7 @@ fn end_date() -> Arg<'static> {
 }
 
 /// After -- --help message.
-fn repo_info() -> &'static str {
+fn repo_info<'a>() -> &'a str {
     "Question? Improvements? Feel free to open a PR or issue at: https://github.com/Corfucinas/crypto-candlesticks-rust/issues"
 }
 
@@ -302,115 +302,102 @@ pub fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-#[test]
-fn main_1m() {
-    use self::main as entry_point;
+#[cfg(test)]
+mod tests {
+    use super::main as entry_point;
     use std::env;
-    env::set_var("symbol", "btc");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "1m");
-    env::set_var("start_date", "2021-01-01");
-    env::set_var("end_date", "2021-02-01");
-    entry_point().unwrap();
-}
+    #[test]
+    fn main_1m() {
+        env::set_var("symbol", "btc");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "1m");
+        env::set_var("start_date", "2021-01-01");
+        env::set_var("end_date", "2021-02-01");
+        entry_point().unwrap();
+    }
 
-#[test]
-fn main_5m() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "eth");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "5m");
-    env::set_var("start_date", "2021-01-01");
-    env::set_var("end_date", "2021-02-01");
-    entry_point().unwrap();
-}
+    #[test]
+    fn main_5m() {
+        env::set_var("symbol", "eth");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "5m");
+        env::set_var("start_date", "2021-01-01");
+        env::set_var("end_date", "2021-02-01");
+        entry_point().unwrap();
+    }
 
-#[test]
-fn main_15m() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "ltc");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "15m");
-    env::set_var("start_date", "2021-01-01");
-    env::set_var("end_date", "2021-02-01");
-    entry_point().unwrap();
-}
+    #[test]
+    fn main_15m() {
+        env::set_var("symbol", "ltc");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "15m");
+        env::set_var("start_date", "2021-01-01");
+        env::set_var("end_date", "2021-02-01");
+        entry_point().unwrap();
+    }
 
-#[test]
-fn main_30m() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "btc");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "30m");
-    env::set_var("start_date", "2021-01-01");
-    env::set_var("end_date", "2021-02-01");
-    entry_point().unwrap();
-}
+    #[test]
+    fn main_30m() {
+        env::set_var("symbol", "btc");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "30m");
+        env::set_var("start_date", "2021-01-01");
+        env::set_var("end_date", "2021-02-01");
+        entry_point().unwrap();
+    }
 
-#[test]
-#[should_panic]
-fn fail_symbol() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "notbtc");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "30m");
-    env::set_var("start_date", "2021-01-01");
-    env::set_var("end_date", "2021-02-01");
-    entry_point().unwrap_err();
-}
+    #[test]
+    #[should_panic]
+    fn fail_symbol() {
+        env::set_var("symbol", "notbtc");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "30m");
+        env::set_var("start_date", "2021-01-01");
+        env::set_var("end_date", "2021-02-01");
+        entry_point().unwrap_err();
+    }
 
-#[test]
-#[should_panic]
-fn fail_base_currency() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "btc");
-    env::set_var("base_currency", "USDR");
-    env::set_var("interval", "30m");
-    env::set_var("start_date", "2021-01-01");
-    env::set_var("end_date", "2021-02-01");
-    entry_point().unwrap();
-}
+    #[test]
+    #[should_panic]
+    fn fail_base_currency() {
+        env::set_var("symbol", "btc");
+        env::set_var("base_currency", "USDR");
+        env::set_var("interval", "30m");
+        env::set_var("start_date", "2021-01-01");
+        env::set_var("end_date", "2021-02-01");
+        entry_point().unwrap();
+    }
 
-#[test]
-#[should_panic]
-fn fail_interval() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "btc");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "10D");
-    env::set_var("start_date", "2021-01-01");
-    env::set_var("end_date", "2021-02-01");
-    entry_point().unwrap();
-}
+    #[test]
+    #[should_panic]
+    fn fail_interval() {
+        env::set_var("symbol", "btc");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "10D");
+        env::set_var("start_date", "2021-01-01");
+        env::set_var("end_date", "2021-02-01");
+        entry_point().unwrap();
+    }
 
-#[test]
-#[should_panic]
-fn fail_start_date() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "btc");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "10D");
-    env::set_var("start_date", "2021-10-01");
-    env::set_var("end_date", "2021-02-300");
-    entry_point().unwrap();
-}
+    #[test]
+    #[should_panic]
+    fn fail_start_date() {
+        env::set_var("symbol", "btc");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "10D");
+        env::set_var("start_date", "2021-10-01");
+        env::set_var("end_date", "2021-02-300");
+        entry_point().unwrap();
+    }
 
-#[test]
-#[should_panic]
-fn fail_end_date() {
-    use self::main as entry_point;
-    use std::env;
-    env::set_var("symbol", "btc");
-    env::set_var("base_currency", "usd");
-    env::set_var("interval", "10D");
-    env::set_var("start_date", "2021-20-01");
-    env::set_var("end_date", "1980-02-01");
-    entry_point().unwrap();
+    #[test]
+    #[should_panic]
+    fn fail_end_date() {
+        env::set_var("symbol", "btc");
+        env::set_var("base_currency", "usd");
+        env::set_var("interval", "10D");
+        env::set_var("start_date", "2021-20-01");
+        env::set_var("end_date", "1980-02-01");
+        entry_point().unwrap();
+    }
 }

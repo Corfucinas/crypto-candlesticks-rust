@@ -24,7 +24,7 @@ impl SqlDatabase {
 }
 
 /// Sqlite table schema.
-fn create_schema() -> &'static str {
+fn create_schema<'a>() -> &'a str {
     "CREATE TABLE IF NOT EXISTS Candlestick(
     ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     Timestamp REAL,

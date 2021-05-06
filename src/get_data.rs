@@ -158,7 +158,7 @@ Returns:
    &str: ETH address.
 ```
 */
-fn buy_me_a_coffee() -> &'static str {
+fn buy_me_a_coffee<'a>() -> &'a str {
     "Thank you for using crypto-candlesticks
 Consider supporting your developers
 ETH: 0x06Acb31587a96808158BdEd07e53668d8ce94cFE
