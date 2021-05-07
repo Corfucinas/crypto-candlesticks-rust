@@ -72,9 +72,8 @@ Args:
 ```
     */
 fn write_excel(filename: String, interval: &str, parsed_data: Vec<CandleData>, ticker: &str) {
-    let mut workbook: Workbook = Workbook::create(
-        &(filename + "-" + &Utc::now().format("%Y-%m-%d %H-%M-%S").to_string() + ".xlsx"),
-    );
+    let mut workbook: Workbook =
+        Workbook::create(&(filename + "-" + &Utc::now().format("%Y-%m-%d").to_string() + ".xlsx"));
     let mut worksheet: Sheet = workbook.create_sheet("Crypto-candlesticks");
     workbook
         .write_sheet(
@@ -140,7 +139,7 @@ pub fn get_data(symbol: &str, base_currency: &str, interval: &str, time_start: i
     let output: String = ticker.clone() + "-" + interval;
     println!("{}", "Data download completed! 🚀".green());
     println!("{}", "Processing data...".yellow());
-    insert_candlesticks(&output, &candle_stick_data, &ticker, interval);
+    insert_candlesticks(&candle_stick_data, &ticker, interval);
     write_excel(output, interval, candle_stick_data, &ticker);
     println!("{}", "Writing to database completed! 🚀🚀".green());
     println!("{}", "Writing to Excel...".yellow());

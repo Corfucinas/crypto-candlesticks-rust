@@ -14,7 +14,7 @@ pub struct SqlDatabase {
 impl SqlDatabase {
     pub fn new(data_base_file: String) -> Self {
         Self {
-            data_base_file: data_base_file.to_owned(),
+            data_base_file: data_base_file.to_string(),
             conn: Connection::open(data_base_file + ".sqlite").unwrap_or_else(|_| {
                 eprintln!("{}", "Could not write data to the database".red());
                 process::exit(1);
@@ -47,13 +47,8 @@ Args:
     interval: &str: Time period downloaded.
 ```
     */
-pub fn insert_candlesticks(
-    file_name: &str,
-    candlestick_info: &[CandleData],
-    ticker: &str,
-    interval: &str,
-) {
-    let connection: Connection = SqlDatabase::new(file_name.to_owned()).conn;
+pub fn insert_candlesticks(candlestick_info: &[CandleData], ticker: &str, interval: &str) {
+    let connection: Connection = SqlDatabase::new(ticker.to_string() + "-" + interval).conn;
     connection
         .execute(&create_schema(), [])
         .unwrap_or_else(|_| {
