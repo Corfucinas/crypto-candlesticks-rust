@@ -10,42 +10,24 @@ use comfy_table::{
 /// Table format to be displayed while data is downloaded.
 pub fn setup_table() -> Table {
     let mut table: Table = Table::new();
+    let table_columns: [&str; 8] = [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "Timestamp",
+        "Ticker",
+        "Time",
+    ];
     table
         .load_preset(UTF8_FULL)
-        .set_header(vec![
-            Cell::new("Open")
+        .set_header(table_columns.iter().map(|column| -> Cell {
+            Cell::new(column)
                 .add_attribute(Attribute::Bold)
                 .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-            Cell::new("High")
-                .add_attribute(Attribute::Bold)
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-            Cell::new("Low")
-                .add_attribute(Attribute::Bold)
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-            Cell::new("Close")
-                .add_attribute(Attribute::Bold)
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-            Cell::new("Volume")
-                .add_attribute(Attribute::Bold)
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-            Cell::new("Timestamp")
-                .add_attribute(Attribute::Bold)
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-            Cell::new("Ticker")
-                .add_attribute(Attribute::Bold)
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-            Cell::new("Time")
-                .add_attribute(Attribute::Bold)
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
-        ])
+                .set_alignment(CellAlignment::Center)
+        }))
         .set_content_arrangement(ContentArrangement::DynamicFullWidth)
         .apply_modifier(ASCII_NO_BORDERS)
         .trim_fmt();
@@ -83,30 +65,8 @@ pub fn write_to_column(
                 ]);
             });
         });
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
-    println!("\n");
+    for _ in 0..=25 {
+        println!("\n");
+    }
     println!("{}", table);
 }

@@ -276,12 +276,11 @@ pub fn main() -> Result<(), Box<dyn Error>> {
                 let default_message_warning: &str =
                     "USING DEFAULT VALUES: run --help to know what arguments you can pass";
                 println!("{}", default_message_warning.yellow());
-                thread::sleep(Duration::from_secs(1));
-                println!("3...");
-                thread::sleep(Duration::from_secs(1));
-                println!("2...");
-                thread::sleep(Duration::from_secs(1));
-                println!("1...");
+                for second in 1..=3 {
+                    println!("{}", format!("{}{}", second, "..."));
+                    thread::sleep(Duration::from_secs(1));
+                }
+                println!("Starting!");
             }
             get_data(
                 symbol,
