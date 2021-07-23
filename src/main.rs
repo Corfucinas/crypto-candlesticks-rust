@@ -5,13 +5,13 @@ mod exchanges;
 mod get_data;
 mod symbols;
 mod text_console;
-use chrono::{TimeZone, Utc};
+use chrono::{NaiveDate, Utc};
 use clap::{App, Arg};
 use colorful::Colorful;
 use core::panic;
 use exchanges::bitfinex::Bitfinex;
 use get_data::get_data;
-use std::{error::Error, process, str::FromStr, thread, time};
+use std::{error::Error, process, thread, time};
 use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
 use time::Duration;
 
@@ -158,7 +158,6 @@ fn check_interval(interval: &str) -> bool {
         .any(|interval_list| interval_list == &interval)
 }
 
-/// Converts the dates to miliseconds from the stdin.
 fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
     let message: String = format!(
         "Data could not be downloaded ❌, please make sure your dates
@@ -166,60 +165,28 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
     (ie. 2020-01-01), your dates are Start Date: {}, End Date: {}",
         &start_date, &end_date,
     );
-    let start_date_parsed: i64 = Utc
-        .ymd(
-            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[0]).unwrap_or_else(
-                |_| {
-                    eprintln!("{}", &message);
-                    process::exit(1);
-                },
-            ),
-            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[1]).unwrap_or_else(
-                |_| {
-                    eprintln!("{}", &message);
-                    process::exit(1);
-                },
-            ),
-            FromStr::from_str(start_date.split('-').collect::<Vec<&str>>()[2]).unwrap_or_else(
-                |_| {
-                    eprintln!("{}", &message);
-                    process::exit(1);
-                },
-            ),
-        )
-        .and_hms_milli(0, 0, 1, 0)
-        .timestamp_millis()
-        .clamp(
-            Utc.ymd(2016, 1, 1)
-                .and_hms_milli(0, 0, 0, 0)
-                .timestamp_millis(),
-            Utc::now().timestamp_millis(),
-        );
-    let end_date_parsed: i64 = Utc
-        .ymd(
-            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[0]).unwrap_or_else(|_| {
-                eprintln!("{}", &message);
-                process::exit(1);
-            }),
-            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[1]).unwrap_or_else(|_| {
-                eprintln!("{}", &message);
-                process::exit(1);
-            }),
-            FromStr::from_str(end_date.split('-').collect::<Vec<&str>>()[2]).unwrap_or_else(|_| {
-                eprintln!("{}", &message);
-                process::exit(1);
-            }),
-        )
-        .and_hms_milli(0, 0, 2, 0)
-        .timestamp_millis()
-        .clamp(
-            Utc.ymd(2016, 1, 1)
-                .and_hms_milli(0, 0, 0, 0)
-                .timestamp_millis(),
-            Utc::now().timestamp_millis(),
-        );
 
-    (start_date_parsed, end_date_parsed)
+    let earliest: NaiveDate = NaiveDate::from_ymd(2016, 1, 1);
+    let today: NaiveDate = Utc::today().naive_utc();
+
+    let parse_date = |date: &str| -> NaiveDate {
+        let date: NaiveDate = NaiveDate::parse_from_str(date, "%F").unwrap_or_else(|_| {
+            eprintln!("{}", &message);
+            process::exit(1);
+        });
+        if date < earliest {
+            earliest.clone()
+        } else if date > today {
+            today.clone()
+        } else {
+            date
+        }
+    };
+
+    (
+        parse_date(start_date).and_hms(0, 0, 1).timestamp() * 1000,
+        parse_date(end_date).and_hms(0, 0, 2).timestamp() * 1000,
+    )
 }
 /// Reads the arguments from stdin.
 pub fn main() -> Result<(), Box<dyn Error>> {
