@@ -175,9 +175,9 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
             process::exit(1);
         });
         if date < earliest {
-            earliest.clone()
+            earliest
         } else if date > today {
-            today.clone()
+            today
         } else {
             date
         }
