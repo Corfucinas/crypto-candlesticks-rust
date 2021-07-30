@@ -49,12 +49,10 @@ Args:
     */
 pub fn insert_candlesticks(candlestick_info: &[CandleData], ticker: &str, interval: &str) {
     let connection: Connection = SqlDatabase::new(ticker.to_string() + "-" + interval).conn;
-    connection
-        .execute(&create_schema(), [])
-        .unwrap_or_else(|_| {
-            eprintln!("{}", "Could not write schema to the database".red());
-            process::exit(1);
-        });
+    connection.execute(create_schema(), []).unwrap_or_else(|_| {
+        eprintln!("{}", "Could not write schema to the database".red());
+        process::exit(1);
+    });
 
     candlestick_info.iter().for_each(|candlestick| {
         candlestick.0.clone().into_iter().for_each(|candle_data| {
