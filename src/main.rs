@@ -190,22 +190,23 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
 }
 /// Reads the arguments from stdin.
 pub fn main() -> Result<(), Box<dyn Error>> {
-    let app_instance: clap::ArgMatches = App::new("crypto-candlesticks-rust")
-        .author("Pedro Torres")
-        .version("0.1.0")
-        .after_help(repo_info())
-        .about(info())
-        .arg(symbol())
-        .arg(base_currency())
-        .arg(interval())
-        .arg(start_date())
-        .arg(end_date())
-        .get_matches();
-    verify_arguments(app_instance);
+    verify_arguments_from_app_instance(
+        App::new("crypto-candlesticks-rust")
+            .author("Pedro Torres")
+            .version("0.1.0")
+            .after_help(repo_info())
+            .about(info())
+            .arg(symbol())
+            .arg(base_currency())
+            .arg(interval())
+            .arg(start_date())
+            .arg(end_date())
+            .get_matches(),
+    );
     Ok(())
 }
 
-fn verify_arguments(app_instance: clap::ArgMatches) {
+fn verify_arguments_from_app_instance(app_instance: clap::ArgMatches) {
     if let (Some(symbol), Some(base_currency), Some(interval), Some(start_date), Some(end_date)) = (
         app_instance.value_of("symbol"),
         app_instance.value_of("base_currency"),
@@ -231,36 +232,25 @@ fn verify_arguments(app_instance: clap::ArgMatches) {
             parsed_end_date,
         )
     } else {
-        const ERROR_MESSAGE: &str = "Error: Please make sure your inputs are correct.";
-        const HELP_MESSAGE: &str = "Run with '-- --help' for the arguments";
-        println!("{}", ERROR_MESSAGE.red());
-        println!("{}", HELP_MESSAGE.yellow());
+        const EXIT_HELP_MESSAGE: [&str; 2] = [
+            "Run with '-- --help' for the arguments",
+            "Error: Please make sure your inputs are correct.",
+        ];
+        EXIT_HELP_MESSAGE
+            .iter()
+            .for_each(|help_message: &&str| println!("{}", help_message.yellow()));
         process::exit(1);
     };
 }
 
 fn check_values_exist_on_the_exchange(symbol: &str, base_currency: &str, interval: &str) {
-    if !check_symbol(symbol) {
-        let message: String = format!(
-            "Data could not be downloaded ❌, check if {} is listed on Bitfinex",
-            symbol
-        );
-        eprintln!("{}", message.red());
-        panic!();
-    }
-    if !check_base_currency(base_currency) {
-        let message: String = format!("Data could not be downloaded ❌, check '{}' is listed on Bitfinex as a base pair. The available base currencies are {:#?}",
-        base_currency,
-        LIST_OF_CURRENCY);
-        eprintln!("{}", message.red());
-        panic!();
-    }
-    if !check_interval(interval) {
-        let message: String = format!("Data could not be downloaded ❌, the following intervals are available {:#?}, you have selected {}",
-        INTERVALS,
-        interval);
-        eprintln!("{}", message.red());
-        panic!();
+    let message: String = format!(
+        "\n Data could not be downloaded ❌, please make sure your inputs are correct.\n Symbol: {}\n, Base Currency: {}\n, Interval: {}\n",
+        &symbol, &base_currency, &interval,
+
+    );
+    if !check_symbol(symbol) || !check_base_currency(base_currency) || !check_interval(interval) {
+        panic!("{}", &message.red());
     }
 }
 
