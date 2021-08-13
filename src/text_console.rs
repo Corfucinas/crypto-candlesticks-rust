@@ -10,7 +10,7 @@ use comfy_table::{
 /// Table format to be displayed while data is downloaded.
 pub fn setup_table() -> Table {
     let mut table: Table = Table::new();
-    let table_columns: [&str; 8] = [
+    const TABLE_COLUMNS: [&str; 8] = [
         "Open",
         "High",
         "Low",
@@ -22,7 +22,7 @@ pub fn setup_table() -> Table {
     ];
     table
         .load_preset(UTF8_FULL)
-        .set_header(table_columns.iter().map(|column| -> Cell {
+        .set_header(TABLE_COLUMNS.iter().map(|column| -> Cell {
             Cell::new(column)
                 .add_attribute(Attribute::Bold)
                 .fg(Color::Green)
