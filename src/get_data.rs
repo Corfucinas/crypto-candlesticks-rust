@@ -5,7 +5,7 @@ use crate::{
     text_console::{setup_table, write_to_column},
 };
 use chrono::{TimeZone, Utc};
-use colorful::Colorful;
+use colorful::{core::color_string::CString, Colorful};
 use simple_excel_writer::{blank, row, CellValue, Row, Sheet, SheetWriter, Workbook};
 use std::{process, thread, time};
 use time::Duration;
@@ -141,10 +141,15 @@ pub fn get_data(symbol: &str, base_currency: &str, interval: &str, time_start: i
     println!("{}", "Processing data...".yellow());
     insert_candlesticks(&candle_stick_data, &ticker, interval);
     write_excel(output, interval, candle_stick_data, &ticker);
-    println!("{}", "Writing to database completed! 🚀🚀".green());
-    println!("{}", "Writing to Excel...".yellow());
-    println!("{}", "Writing to Excel completed! 🚀🚀🚀".green());
-    println!("----------------------");
+    let success_messages: [CString; 4] = [
+        "Writing to database completed! 🚀🚀".green(),
+        "Writing to Excel...".yellow(),
+        "Writing to Excel completed! 🚀🚀🚀".green(),
+        "----------------------".green(),
+    ];
+    success_messages.iter().for_each(|message| {
+        println!("{}", message);
+    });
     println!("{}", buy_me_a_coffee());
 }
 
