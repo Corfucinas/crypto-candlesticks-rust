@@ -40,6 +40,7 @@ pub fn get_candles(
     let message: String = format!("Downloading {} data for {} interval...", ticker, interval);
     let bitfinex: Bitfinex = Bitfinex::new();
     println!("{}", message.yellow());
+
     while start_time <= end_time {
         let period: i64 = start_time + step_size;
         let candlestick: Option<CandleData> =
@@ -50,6 +51,7 @@ pub fn get_candles(
             eprintln!("{}", panic_message.red());
             process::exit(1)
         }
+
         write_to_column(ticker, interval, candle_data.clone(), setup_table());
         candle_data.push(candlestick.unwrap_or_else(|| {
             eprintln!("{}", "Could not append to datalist".red());
@@ -71,7 +73,12 @@ Args:
     ticker: &str: Quote + base asset.
 ```
     */
-fn write_excel(filename: String, interval: &str, parsed_data: Vec<CandleData>, ticker: &str) {
+fn write_to_excel_file(
+    filename: String,
+    interval: &str,
+    parsed_data: Vec<CandleData>,
+    ticker: &str,
+) {
     let mut workbook: Workbook =
         Workbook::create(&(filename + "-" + &Utc::now().format("%Y-%m-%d").to_string() + ".xlsx"));
     let mut worksheet: Sheet = workbook.create_sheet("Crypto-candlesticks");
@@ -137,18 +144,26 @@ pub fn get_data(symbol: &str, base_currency: &str, interval: &str, time_start: i
     let candle_stick_data: Vec<CandleData> =
         get_candles(&ticker, time_start, time_end, interval, STEP_SIZE);
     let output: String = ticker.clone() + "-" + interval;
-    println!("{}", "Data download completed! 🚀".green());
-    println!("{}", "Processing data...".yellow());
+
+    let download_success_message: [CString; 2] = [
+        "Data download completed! 🚀".green(),
+        "Processing data...".yellow(),
+    ];
+    download_success_message.iter().for_each(|success_message| {
+        println!("{}", success_message);
+    });
+
     insert_candlesticks(&candle_stick_data, &ticker, interval);
-    write_excel(output, interval, candle_stick_data, &ticker);
-    let success_messages: [CString; 4] = [
+    write_to_excel_file(output, interval, candle_stick_data, &ticker);
+
+    let success_exit_messages: [CString; 4] = [
         "Writing to database completed! 🚀🚀".green(),
         "Writing to Excel...".yellow(),
         "Writing to Excel completed! 🚀🚀🚀".green(),
         "----------------------".green(),
     ];
-    success_messages.iter().for_each(|message| {
-        println!("{}", message);
+    success_exit_messages.iter().for_each(|failure_message| {
+        println!("{}", failure_message);
     });
     println!("{}", buy_me_a_coffee());
 }

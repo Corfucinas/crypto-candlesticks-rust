@@ -1,6 +1,6 @@
 //! Print a table to the console.
 
-use crate::exchanges::bitfinex::CandleData;
+use crate::exchanges::bitfinex::{CandleData, FloatOrInt};
 use chrono::{TimeZone, Utc};
 use comfy_table::{
     presets::ASCII_NO_BORDERS, presets::UTF8_FULL, Attribute, Cell, CellAlignment, Color,
@@ -53,20 +53,30 @@ pub fn write_to_column(
                             .expect("Datetime could not be converted from timestamp"),
                     )
                     .to_string();
-                table.add_row(vec![
-                    Cell::new(single_candle_info[2]).set_alignment(CellAlignment::Center),
-                    Cell::new(single_candle_info[1]).set_alignment(CellAlignment::Center),
-                    Cell::new(single_candle_info[3]).set_alignment(CellAlignment::Center),
-                    Cell::new(single_candle_info[4]).set_alignment(CellAlignment::Center),
-                    Cell::new(single_candle_info[5]).set_alignment(CellAlignment::Center),
-                    Cell::new(ticker).set_alignment(CellAlignment::Center),
-                    Cell::new(interval).set_alignment(CellAlignment::Center),
-                    Cell::new(datetime).set_alignment(CellAlignment::Center),
-                ]);
+                insert_rows_to_table(single_candle_info, &mut table, ticker, interval, datetime);
             });
         });
     for _ in 0..=25 {
         println!("\n");
     }
     println!("{}", table);
+}
+
+fn insert_rows_to_table(
+    single_candle_info: [FloatOrInt; 6],
+    table: &mut Table,
+    ticker: &str,
+    interval: &str,
+    datetime: String,
+) {
+    table.add_row(vec![
+        Cell::new(single_candle_info[2]).set_alignment(CellAlignment::Center),
+        Cell::new(single_candle_info[1]).set_alignment(CellAlignment::Center),
+        Cell::new(single_candle_info[3]).set_alignment(CellAlignment::Center),
+        Cell::new(single_candle_info[4]).set_alignment(CellAlignment::Center),
+        Cell::new(single_candle_info[5]).set_alignment(CellAlignment::Center),
+        Cell::new(ticker).set_alignment(CellAlignment::Center),
+        Cell::new(interval).set_alignment(CellAlignment::Center),
+        Cell::new(datetime).set_alignment(CellAlignment::Center),
+    ]);
 }
