@@ -7,9 +7,9 @@ path = "./test/test_config.rs"
 
 [package]
 name = "crypto-candlesticks-rust"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Pedro Torres <corfucinas@protonmail.com>"]
-license = "MIT"
+license = "GNU GPLv3"
 edition = "2018"
 description = "Download candlestick data fast & easy for analysis"
 documentation = "https://docs.rs/crate/crypto-candlesticks-rust/"
@@ -34,10 +34,10 @@ codegen-units = 1
 
 [dependencies]
 chrono = "0.4.19"
-clap = "3.0.0-beta.2"
+clap = "3.0.0-beta.4"
 colorful = "0.2.1"
-comfy-table = "4.0.1"
+comfy-table = "4.1.1"
 reqwest = { version = "0.11.4", features = ["blocking", "json"] }
 rusqlite = { version = "0.25.3", features = ["bundled"] }
-serde = { version = "1.0.126", features = ["derive"] }
+serde = { version = "1.0.127", features = ["derive"] }
 simple_excel_writer = "0.1.7"
