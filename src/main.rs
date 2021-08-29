@@ -188,7 +188,7 @@ pub fn main() -> Result<(), Box<dyn Error>> {
     verify_arguments_from_app_instance(
         App::new("crypto-candlesticks-rust")
             .author("Pedro Torres")
-            .version("0.1.0")
+            .version("0.1.2")
             .after_help(repo_info())
             .about(info())
             .arg(symbol())
