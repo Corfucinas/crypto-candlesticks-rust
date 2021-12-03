@@ -7,14 +7,12 @@ use crate::exchanges::bitfinex::CandleData;
 
 #[derive(Debug)]
 pub struct SqlDatabase {
-    data_base_file: String,
     conn: Connection,
 }
 
 impl SqlDatabase {
     pub fn new(data_base_file: String) -> Self {
         Self {
-            data_base_file: data_base_file.to_string(),
             conn: Connection::open(data_base_file + ".sqlite").unwrap_or_else(|_| {
                 eprintln!("{}", "Could not write data to the database".red());
                 process::exit(1);
