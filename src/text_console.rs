@@ -56,9 +56,8 @@ pub fn write_to_column(
                 insert_rows_to_table(single_candle_info, &mut table, ticker, interval, datetime);
             });
         });
-    for _ in 0..=25 {
-        println!("\n");
-    }
+    // clear the console
+    print!("{esc}c", esc = 27 as char);
     println!("{}", table);
 }
 
