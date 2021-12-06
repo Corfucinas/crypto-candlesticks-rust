@@ -1,0 +1,54 @@
+name: Ubuntu test
+on: [push]
+
+env:
+  RUST_BACKTRACE: 1
+
+jobs:
+  build:
+    name: Create Ubuntu release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: install stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.cargo/registry
+          # Add date to the cache to keep it up to date
+          key: ubuntu-latest-stable-cargo-registry-${{ hashFiles('**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
+          # Restore from outdated cache for speed
+          restore-keys: |
+            ubuntu-latest-stable-cargo-registry-${{ hashFiles('**/Cargo.toml') }}
+            ubuntu-latest-stable-cargo-registry-
+
+      - name: Cache cargo index
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.cargo/git
+          # Add date to the cache to keep it up to date
+          key: ubuntu-latest-stable-cargo-index-${{ hashFiles('**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
+          # Restore from outdated cache for speed
+          restore-keys: |
+            ubuntu-latest-stable-cargo-index-${{ hashFiles('**/Cargo.toml') }}
+            ubuntu-latest-stable-cargo-index-
+
+      - name: Cache core cargo target
+        uses: actions/cache@v2.1.7
+        with:
+          path: target
+          # Add date to the cache to keep it up to date
+          key: ubuntu-latest-stable-cargo-core-${{ hashFiles('core/**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
+          # Restore from outdated cache for speed
+          restore-keys: |
+            ubuntu-latest-stable-cargo-core-${{ hashFiles('core/**/Cargo.toml') }}
+            ubuntu-latest-stable-cargo-core-
+
+      - name: Clippy & Tests
+        run: |
+          cargo clippy -- -D clippy::all && cargo test
