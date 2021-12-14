@@ -209,7 +209,7 @@ fn verify_arguments_from_app_instance(app_instance: clap::ArgMatches) {
         app_instance.value_of("start_date"),
         app_instance.value_of("end_date"),
     ) {
-        check_values_exist_on_the_exchange(symbol, base_currency, interval);
+        check_values_exist_on_the_exchange(symbol, base_currency, interval, start_date, end_date);
         let (parsed_start_date, parsed_end_date): (i64, i64) =
             check_and_transform_dates(start_date, end_date);
         check_default_arguments(
@@ -238,10 +238,16 @@ fn verify_arguments_from_app_instance(app_instance: clap::ArgMatches) {
     };
 }
 
-fn check_values_exist_on_the_exchange(symbol: &str, base_currency: &str, interval: &str) {
+fn check_values_exist_on_the_exchange(
+    symbol: &str,
+    base_currency: &str,
+    interval: &str,
+    start_date: &str,
+    end_date: &str,
+) {
     let message: String = format!(
-        "\n Data could not be downloaded ❌, please make sure your inputs are correct.\n Symbol: {}\n, Base Currency: {}\n, Interval: {}\n",
-        &symbol, &base_currency, &interval,
+        "\n Data could not be downloaded ❌, please make sure your inputs are correct.\n Symbol: {}\n, Base Currency: {}\n, Interval: {}\n, Start_date: {}\n, End_date: {}",
+        &symbol, &base_currency, &interval, &start_date, &end_date,
 
     );
     if !check_symbol(symbol) || !check_base_currency(base_currency) || !check_interval(interval) {
@@ -277,6 +283,7 @@ fn check_default_arguments(
 mod success_tests {
     use super::main as entry_point;
     use std::env;
+
     #[test]
     fn main_1m() {
         env::set_var("symbol", "btc");
@@ -309,7 +316,7 @@ mod success_tests {
 
     #[test]
     fn main_30m() {
-        env::set_var("symbol", "btc");
+        env::set_var("symbol", "xrp");
         env::set_var("base_currency", "usd");
         env::set_var("interval", "30m");
         env::set_var("start_date", "2021-01-01");
