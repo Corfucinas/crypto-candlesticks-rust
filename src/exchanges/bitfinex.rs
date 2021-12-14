@@ -119,7 +119,6 @@ impl<'a> Bitfinex<'a> {
     }
 
     /// Will retry to download the data in case of an interruption.
-    // #[allow(clippy::unnecessary_operation)]
     fn retry_symbol(self, url: &str) -> Option<String> {
         let mut counter: i8 = 0;
         loop {
