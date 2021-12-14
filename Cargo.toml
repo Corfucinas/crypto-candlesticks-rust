@@ -6,38 +6,38 @@ name = "crypto-candlesticks-rust-test"
 path = "./test/test_config.rs"
 
 [package]
-name = "crypto-candlesticks-rust"
-version = "0.1.2"
 authors = ["Pedro Torres <corfucinas@protonmail.com>"]
-license = "GPL-3.0-or-later"
-edition = "2021"
+categories = ["command-line-utilities", "cryptography::cryptocurrencies"]
 description = "Download candlestick data fast & easy for analysis"
 documentation = "https://docs.rs/crate/crypto-candlesticks-rust/"
-repository = "https://github.com/Corfucinas/crypto-candlesticks-rust"
-readme = "README.md"
-keywords = ["cryptocurrency", "candlesticks", "download", "data", "ohlc"]
-categories = ["command-line-utilities", "cryptography::cryptocurrencies"]
+edition = "2021"
 exclude = [
-    "examples/",
-    "hex/",
-    "media/crypto-candlestick-rust.mp4",
-    "media/crypto-candlestick-rust.png",
-    "scripts/",
-    ".github",
+  "examples/",
+  "hex/",
+  "media/crypto-candlestick-rust.mp4",
+  "media/crypto-candlestick-rust.png",
+  "scripts/",
+  ".github",
 ]
+keywords = ["cryptocurrency", "candlesticks", "download", "data", "ohlc"]
+license = "GPL-3.0-or-later"
+name = "crypto-candlesticks-rust"
+readme = "README.md"
+repository = "https://github.com/Corfucinas/crypto-candlesticks-rust"
+version = "0.1.2"
 
 [profile.release]
-opt-level = 'z'  # Optimize for size.
-lto = true
-panic = "abort"
 codegen-units = 1
+lto = true
+opt-level = 'z' # Optimize for size.
+panic = "abort"
 
 [dependencies]
 chrono = "0.4.19"
-clap = "3.0.0-rc.4"
+clap = {version = "3.0.0-rc.4", features = ["env"]}
 colorful = "0.2.1"
 comfy-table = "5.0.0"
-reqwest = { version = "0.11.7", features = ["blocking", "json"] }
-rusqlite = { version = "0.26.3", features = ["bundled"] }
-serde = { version = "1.0.131", features = ["derive"] }
+reqwest = {version = "0.11.7", features = ["blocking", "json"]}
+rusqlite = {version = "0.26.3", features = ["bundled"]}
+serde = {version = "1.0.131", features = ["derive"]}
 simple_excel_writer = "0.1.9"

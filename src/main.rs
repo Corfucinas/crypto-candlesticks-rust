@@ -32,7 +32,6 @@ fn symbol<'a>() -> Arg<'a> {
         .short('s')
         .long("symbol")
         .value_name("BTC")
-        .about("Cryptocurrency symbol to download (ie. BTC, ETH, LTC)")
         .takes_value(true)
         .display_order(1)
         .default_value("BTC")
@@ -50,7 +49,6 @@ fn base_currency<'a>() -> Arg<'a> {
         .short('b')
         .long("base_currency")
         .value_name("USDT")
-        .about("Cryptocurrency base trading pair")
         .takes_value(true)
         .display_order(2)
         .default_value("USD")
@@ -68,7 +66,6 @@ fn interval<'a>() -> Arg<'a> {
         .short('i')
         .long("interval")
         .value_name("1m, 5, 15m, 30m, 1h, 3h, 6h, 12h, 1D, 7D, 14D, 1M")
-        .about("Interval that will be used to download the data")
         .takes_value(true)
         .display_order(3)
         .default_value("1D")
@@ -86,7 +83,6 @@ fn start_date<'a>() -> Arg<'a> {
         .short('d')
         .long("start_date")
         .value_name("YYYY-MM-DD")
-        .about("Date to start downloading the data (ie. YYYY-MM-DD)")
         .takes_value(true)
         .display_order(4)
         .default_value("2020-11-01")
@@ -104,7 +100,6 @@ fn end_date<'a>() -> Arg<'a> {
         .short('e')
         .long("end_date")
         .value_name("YYYY-MM-DD")
-        .about("Date up to the data will be downloaded (ie. YYYY-MM-DD)")
         .takes_value(true)
         .display_order(5)
         .default_value("2021-01-01")
@@ -184,7 +179,7 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
     )
 }
 /// Reads the arguments from stdin.
-pub fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     verify_arguments_from_app_instance(
         App::new("crypto-candlesticks-rust")
             .author("Pedro Torres")
@@ -192,10 +187,15 @@ pub fn main() -> Result<(), Box<dyn Error>> {
             .after_help(repo_info())
             .about(info())
             .arg(symbol())
+            .about("Cryptocurrency symbol to download (ie. BTC, ETH, LTC)")
             .arg(base_currency())
+            .about("Cryptocurrency base trading pair")
             .arg(interval())
+            .about("Interval that will be used to download the data")
             .arg(start_date())
+            .about("Date to start downloading the data (ie. YYYY-MM-DD)")
             .arg(end_date())
+            .about("Date up to the data will be downloaded (ie. YYYY-MM-DD)")
             .get_matches(),
     );
     Ok(())
