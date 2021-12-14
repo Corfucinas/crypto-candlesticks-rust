@@ -6,12 +6,12 @@ use std::process;
 use crate::exchanges::bitfinex::CandleData;
 
 #[derive(Debug)]
-pub struct SqlDatabase {
+struct SqlDatabase {
     conn: Connection,
 }
 
 impl SqlDatabase {
-    pub fn new(data_base_file: String) -> Self {
+    fn new(data_base_file: String) -> Self {
         Self {
             conn: Connection::open(data_base_file + ".sqlite").unwrap_or_else(|_| {
                 eprintln!("{}", "Could not write data to the database".red());
