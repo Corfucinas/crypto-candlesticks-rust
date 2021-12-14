@@ -119,15 +119,14 @@ impl<'a> Bitfinex<'a> {
     }
 
     /// Will retry to download the data in case of an interruption.
-    #[allow(clippy::unnecessary_operation)]
+    // #[allow(clippy::unnecessary_operation)]
     fn retry_symbol(self, url: &str) -> Option<String> {
         let mut counter: i8 = 0;
         loop {
             counter += 1;
             thread::sleep(time::Duration::from_secs(1));
             if counter >= 15 {
-                println!("{}", "Cannot connect to Bitfinex, please try again".red());
-                return None;
+                println!("{}", "Cannot connect to Bitfinex, please try again".red())
             } else if blocking::get(url).is_ok()
                 && blocking::get(url)
                     .as_ref()
@@ -135,25 +134,21 @@ impl<'a> Bitfinex<'a> {
                     .status()
                     == StatusCode::OK
             {
-                Some(
-                    blocking::get(url)
-                        .expect("Error downloading the data, try again")
-                        .json::<String>()
-                        .expect("Error parsing the data, try again"),
-                );
+                blocking::get(url)
+                    .expect("Error downloading the data, try again")
+                    .json::<String>()
+                    .expect("Error parsing the data, try again");
             }
         }
     }
     /// Will retry to download the data in case of an interruption.
-    #[allow(clippy::unnecessary_operation)]
     fn retry_candles(self, url: &str) -> Option<CandleData> {
         let mut counter: i8 = 0;
         loop {
             counter += 1;
             thread::sleep(time::Duration::from_secs(1));
             if counter >= 15 {
-                println!("{}", "Cannot connect to Bitfinex, please try again".red());
-                return None;
+                println!("{}", "Cannot connect to Bitfinex, please try again".red())
             } else if blocking::get(url).is_ok()
                 && blocking::get(url)
                     .as_ref()
@@ -161,12 +156,10 @@ impl<'a> Bitfinex<'a> {
                     .status()
                     == StatusCode::OK
             {
-                Some(
-                    blocking::get(url)
-                        .expect("Error downloading the data, try again")
-                        .json::<CandleData>()
-                        .expect("Error downloading the data, try again"),
-                );
+                blocking::get(url)
+                    .expect("Error downloading the data, try again")
+                    .json::<CandleData>()
+                    .expect("Error downloading the data, try again");
             }
         }
     }

@@ -29,7 +29,7 @@ Returns:
     Vec<CandleData>: A vector of FloatOrInt.
 ```
     */
-pub fn get_candles(
+fn get_candles(
     ticker: &str,
     mut start_time: i64,
     end_time: i64,
