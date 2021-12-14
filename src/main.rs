@@ -274,7 +274,7 @@ fn check_default_arguments(
 }
 
 #[cfg(test)]
-mod tests {
+mod success_tests {
     use super::main as entry_point;
     use std::env;
     #[test]
@@ -283,7 +283,7 @@ mod tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "1m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-02-01");
+        env::set_var("end_date", "2021-01-10");
         entry_point().unwrap();
     }
 
@@ -293,7 +293,7 @@ mod tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "5m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-02-01");
+        env::set_var("end_date", "2021-01-10");
         entry_point().unwrap();
     }
 
@@ -303,7 +303,7 @@ mod tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "15m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-02-01");
+        env::set_var("end_date", "2021-01-10");
         entry_point().unwrap();
     }
 
@@ -313,9 +313,15 @@ mod tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "30m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-02-01");
+        env::set_var("end_date", "2021-01-10");
         entry_point().unwrap();
     }
+}
+
+#[cfg(test)]
+mod fail_tests {
+    use super::main as entry_point;
+    use std::env;
 
     #[test]
     #[should_panic]
@@ -324,8 +330,8 @@ mod tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "30m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-02-01");
-        entry_point().unwrap_err();
+        env::set_var("end_date", "2021-01-10");
+        entry_point().unwrap();
     }
 
     #[test]
@@ -335,7 +341,7 @@ mod tests {
         env::set_var("base_currency", "USDR");
         env::set_var("interval", "30m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-02-01");
+        env::set_var("end_date", "2021-01-10");
         entry_point().unwrap();
     }
 
@@ -346,7 +352,7 @@ mod tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "10D");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-02-01");
+        env::set_var("end_date", "2021-01-10");
         entry_point().unwrap();
     }
 
