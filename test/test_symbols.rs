@@ -1,7 +1,6 @@
 //! Test quote currency is listed.
 
 #[path = "../src/exchanges/mod.rs"]
-#[allow(dead_code)]
 mod exchanges;
 
 #[path = "../src/symbols/list_of_currency.rs"]
