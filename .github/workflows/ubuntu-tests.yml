@@ -51,4 +51,4 @@ jobs:
 
       - name: Clippy & Tests
         run: |
-          cargo clippy -- -D clippy::all && cargo test
+          cargo clippy -- -D clippy::all && cargo test --release
