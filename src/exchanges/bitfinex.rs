@@ -89,12 +89,14 @@ impl<'a> Bitfinex<'a> {
             start_time,
             end_time
         );
-        if blocking::get(&url).is_err() {
+        let candle_data_request = blocking::get(&url);
+        if candle_data_request.is_err() {
+            println!("{}", candle_data_request.unwrap_err());
             self.retry_candles(&url)
-        } else if blocking::get(&url).is_ok()
-            && blocking::get(&url).as_ref().unwrap().status() == StatusCode::OK
+        } else if candle_data_request.is_ok()
+            && candle_data_request.as_ref().unwrap().status() == StatusCode::OK
         {
-            Some(blocking::get(&url).unwrap().json().unwrap())
+            Some(candle_data_request.unwrap().json().unwrap())
         } else {
             None
         }
@@ -107,12 +109,13 @@ impl<'a> Bitfinex<'a> {
     */
     pub fn get_symbols(self) -> Option<String> {
         let url: String = format!("{}{}", self.api_v1, "/symbols");
-        if blocking::get(&url).is_err() {
+        let symbols_request = blocking::get(&url);
+        if symbols_request.is_err() {
             self.retry_symbol(&url)
-        } else if blocking::get(&url).is_ok()
-            && blocking::get(&url).as_ref().unwrap().status() == StatusCode::OK
+        } else if symbols_request.is_ok()
+            && symbols_request.as_ref().unwrap().status() == StatusCode::OK
         {
-            Some(blocking::get(&url).unwrap().text().unwrap())
+            Some(symbols_request.unwrap().text().unwrap())
         } else {
             None
         }
@@ -123,17 +126,18 @@ impl<'a> Bitfinex<'a> {
         let mut counter: i8 = 0;
         loop {
             counter += 1;
+            let retry_symbol_request = blocking::get(url);
             thread::sleep(time::Duration::from_secs(1));
             if counter >= 15 {
                 println!("{}", "Cannot connect to Bitfinex, please try again".red())
-            } else if blocking::get(url).is_ok()
-                && blocking::get(url)
+            } else if retry_symbol_request.is_ok()
+                && retry_symbol_request
                     .as_ref()
                     .expect("Error downloading the data, try again")
                     .status()
                     == StatusCode::OK
             {
-                blocking::get(url)
+                retry_symbol_request
                     .expect("Error downloading the data, try again")
                     .json::<String>()
                     .expect("Error parsing the data, try again");
@@ -145,17 +149,18 @@ impl<'a> Bitfinex<'a> {
         let mut counter: i8 = 0;
         loop {
             counter += 1;
+            let retry_candles_request = blocking::get(url);
             thread::sleep(time::Duration::from_secs(1));
             if counter >= 15 {
                 println!("{}", "Cannot connect to Bitfinex, please try again".red())
-            } else if blocking::get(url).is_ok()
-                && blocking::get(url)
+            } else if retry_candles_request.is_ok()
+                && retry_candles_request
                     .as_ref()
                     .expect("Error downloading the data, try again")
                     .status()
                     == StatusCode::OK
             {
-                blocking::get(url)
+                retry_candles_request
                     .expect("Error downloading the data, try again")
                     .json::<CandleData>()
                     .expect("Error downloading the data, try again");
