@@ -115,7 +115,7 @@ impl<'a> Bitfinex<'a> {
         match symbols_request {
             Ok(data) => {
                 if data.status() == StatusCode::OK {
-                    Some(data.json().unwrap())
+                    Some(data.text().unwrap())
                 } else {
                     self.retry_symbol(&url)
                 }
