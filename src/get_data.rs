@@ -11,7 +11,7 @@ use std::{process, thread, time};
 use time::Duration;
 
 /// Avoid getting rate limited by Bitfinex.
-const RATE_LIMIT: f32 = 1.6;
+const RATE_LIMIT: f32 = 1.82;
 /// Slice of data to be downloaded.
 const STEP_SIZE: i64 = 86400000;
 
