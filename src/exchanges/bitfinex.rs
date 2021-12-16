@@ -107,14 +107,17 @@ impl<'a> Bitfinex<'a> {
     */
     pub fn get_symbols(self) -> Option<String> {
         let url: String = format!("{}{}", self.api_v1, "/symbols");
-        if blocking::get(&url).is_err() {
-            self.retry_symbol(&url)
-        } else if blocking::get(&url).is_ok()
-            && blocking::get(&url).as_ref().unwrap().status() == StatusCode::OK
-        {
-            Some(blocking::get(&url).unwrap().text().unwrap())
-        } else {
-            None
+        let symbols_request = blocking::get(&url);
+        match symbols_request {
+            Ok(data) => {
+                if data.status() == StatusCode::OK {
+                    Some(data.text().unwrap())
+                } else {
+                    self.retry_symbol(&url)
+                }
+            }
+            _ if symbols_request.is_err() => self.retry_symbol(&url),
+            _ => None,
         }
     }
 
