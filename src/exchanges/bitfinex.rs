@@ -90,17 +90,19 @@ impl<'a> Bitfinex<'a> {
             end_time
         );
         let candle_data_request = blocking::get(&url);
-        if candle_data_request.is_err() {
-            println!("{}", candle_data_request.unwrap_err());
-            self.retry_candles(&url)
-        } else if candle_data_request.is_ok()
-            && candle_data_request.as_ref().unwrap().status() == StatusCode::OK
-        {
-            Some(candle_data_request.unwrap().json().unwrap())
-        } else {
-            None
+        match candle_data_request {
+            Ok(data) => {
+                if data.status() == StatusCode::OK {
+                    Some(data.json().unwrap())
+                } else {
+                    self.retry_candles(&url)
+                }
+            }
+            _ if candle_data_request.is_err() => self.retry_candles(&url),
+            _ => None,
         }
     }
+
     /**
     Calls the exchange and gets all current tickers.
     ```text
@@ -110,14 +112,16 @@ impl<'a> Bitfinex<'a> {
     pub fn get_symbols(self) -> Option<String> {
         let url: String = format!("{}{}", self.api_v1, "/symbols");
         let symbols_request = blocking::get(&url);
-        if symbols_request.is_err() {
-            self.retry_symbol(&url)
-        } else if symbols_request.is_ok()
-            && symbols_request.as_ref().unwrap().status() == StatusCode::OK
-        {
-            Some(symbols_request.unwrap().text().unwrap())
-        } else {
-            None
+        match symbols_request {
+            Ok(data) => {
+                if data.status() == StatusCode::OK {
+                    Some(data.json().unwrap())
+                } else {
+                    self.retry_symbol(&url)
+                }
+            }
+            _ if symbols_request.is_err() => self.retry_symbol(&url),
+            _ => None,
         }
     }
 
@@ -144,6 +148,7 @@ impl<'a> Bitfinex<'a> {
             }
         }
     }
+
     /// Will retry to download the data in case of an interruption.
     fn retry_candles(self, url: &str) -> Option<CandleData> {
         let mut counter: i8 = 0;
