@@ -14,7 +14,7 @@ I created this project to port my python package [crypto-candlesticks](https://p
 Once the data is downloaded, it will be converted and stored in a `.csv and .sqlite3` for convenient analysis.
 The data will include the `Open, High, Low, Close` of the candles and the `volume` during the `interval` and its `timestamp`.
 
-![gif-animation](media/animation.gif)
+![gif-animation](https://raw.githubusercontent.com/Corfucinas/crypto-candlesticks-rust/master/media/animation.gif "program-animation-in-gif")
 
 ## Installation
 
