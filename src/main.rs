@@ -184,7 +184,7 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
     )
 }
 /// Reads the arguments from stdin.
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), &'static dyn Error> {
     verify_arguments_from_app_instance(
         App::new("crypto-candlesticks-rust")
             .author("Pedro Torres")
@@ -290,7 +290,7 @@ mod success_tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "1m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-01-10");
+        env::set_var("end_date", "2021-01-07");
         entry_point().unwrap();
     }
 
@@ -300,7 +300,7 @@ mod success_tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "5m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-01-10");
+        env::set_var("end_date", "2021-01-07");
         entry_point().unwrap();
     }
 
@@ -310,7 +310,7 @@ mod success_tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "15m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-01-10");
+        env::set_var("end_date", "2021-01-07");
         entry_point().unwrap();
     }
 
@@ -320,7 +320,7 @@ mod success_tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "30m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-01-10");
+        env::set_var("end_date", "2021-01-07");
         entry_point().unwrap();
     }
 }
@@ -337,7 +337,7 @@ mod fail_tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "30m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-01-10");
+        env::set_var("end_date", "2021-01-07");
         entry_point().unwrap();
     }
 
@@ -348,7 +348,7 @@ mod fail_tests {
         env::set_var("base_currency", "USDR");
         env::set_var("interval", "30m");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-01-10");
+        env::set_var("end_date", "2021-01-07");
         entry_point().unwrap();
     }
 
@@ -359,7 +359,7 @@ mod fail_tests {
         env::set_var("base_currency", "usd");
         env::set_var("interval", "10D");
         env::set_var("start_date", "2021-01-01");
-        env::set_var("end_date", "2021-01-10");
+        env::set_var("end_date", "2021-01-07");
         entry_point().unwrap();
     }
 
