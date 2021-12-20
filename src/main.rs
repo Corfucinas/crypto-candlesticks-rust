@@ -188,7 +188,7 @@ fn main() -> Result<(), &'static dyn Error> {
     verify_arguments_from_app_instance(
         App::new("crypto-candlesticks-rust")
             .author("Pedro Torres")
-            .version("0.1.2")
+            .version("0.1.5")
             .after_help(repo_info())
             .about(info())
             .arg(symbol())
