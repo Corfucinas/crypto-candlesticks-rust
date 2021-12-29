@@ -54,7 +54,8 @@ pub fn insert_candlesticks(candlestick_info: &[CandleData], ticker: &str, interv
         candlestick.0.clone().into_iter().for_each(|candle_data| {
             connection
                 .execute(
-                    "INSERT INTO Candlestick (Timestamp, Open, Close, High, Low, Volume, Ticker, Interval)
+                    "INSERT INTO Candlestick (Timestamp, Open, Close, High, Low, Volume, Ticker, \
+                     Interval)
             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
                     params![
                         candle_data[0],
