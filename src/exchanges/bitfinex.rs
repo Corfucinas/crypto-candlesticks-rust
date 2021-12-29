@@ -61,18 +61,16 @@ impl<'a> Bitfinex<'a> {
         }
     }
 
-    /**
-    Downloads the candlestick data for the given period.
-    ```text
-    Args:
-    start_time: i64: Time in ms on which the data will start.
-    ticker: &str: Cryptocurrency pair.
-    end_time: i64: Time in ms on which the data will finish.
-    time_interval: &str: Interval of the data.
-
-    Returns: Option<CandleData>: Returns a list of candle data which can be parsed.
-    ```
-    */
+    /// Downloads the candlestick data for the given period.
+    /// ```text
+    /// Args:
+    /// start_time: i64: Time in ms on which the data will start.
+    /// ticker: &str: Cryptocurrency pair.
+    /// end_time: i64: Time in ms on which the data will finish.
+    /// time_interval: &str: Interval of the data.
+    ///
+    /// Returns: Option<CandleData>: Returns a list of candle data which can be parsed.
+    /// ```
     pub fn get_candles(
         self,
         tickers: &str,
@@ -85,7 +83,7 @@ impl<'a> Bitfinex<'a> {
             self.api_v2,
             time_interval,
             tickers.to_uppercase(),
-            10000, /* max allowed by Bitfinex */
+            10000, // max allowed by Bitfinex
             start_time,
             end_time
         );
@@ -103,12 +101,10 @@ impl<'a> Bitfinex<'a> {
         }
     }
 
-    /**
-    Calls the exchange and gets all current tickers.
-    ```text
-    Returns: Option<String>: All available tickers.
-    ```
-    */
+    /// Calls the exchange and gets all current tickers.
+    /// ```text
+    /// Returns: Option<String>: All available tickers.
+    /// ```
     pub fn get_symbols(self) -> Option<String> {
         let url: String = format!("{}{}", self.api_v1, "/symbols");
         let symbols_request = blocking::get(&url);

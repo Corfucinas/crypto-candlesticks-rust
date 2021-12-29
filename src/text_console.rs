@@ -3,8 +3,8 @@
 use crate::exchanges::bitfinex::{CandleData, FloatOrInt};
 use chrono::{TimeZone, Utc};
 use comfy_table::{
-    presets::{ASCII_NO_BORDERS, UTF8_FULL}, Attribute, Cell, CellAlignment, Color,
-    ContentArrangement, Table,
+    presets::{ASCII_NO_BORDERS, UTF8_FULL},
+    Attribute, Cell, CellAlignment, Color, ContentArrangement, Table,
 };
 
 /// Table format to be displayed while data is downloaded.

@@ -35,16 +35,14 @@ fn create_schema<'a>() -> &'a str {
     Interval TEXT)"
 }
 
-/**
-Writes the candlestick data into a SQL table.
-```text
-Args:
-    file_name: &str: Filename for the file
-    candlestick_info: &[CandleData]: List containing the candlestick information.
-    ticker: &str: Time interval of the candle.
-    interval: &str: Time period downloaded.
-```
-    */
+/// Writes the candlestick data into a SQL table.
+/// ```text
+/// Args:
+/// file_name: &str: Filename for the file
+/// candlestick_info: &[CandleData]: List containing the candlestick information.
+/// ticker: &str: Time interval of the candle.
+/// interval: &str: Time period downloaded.
+/// ```
 pub fn insert_candlesticks(candlestick_info: &[CandleData], ticker: &str, interval: &str) {
     let connection: Connection = SqlDatabase::new(ticker.to_string() + "-" + interval).conn;
     connection.execute(create_schema(), []).unwrap_or_else(|_| {
