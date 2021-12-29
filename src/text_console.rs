@@ -3,7 +3,7 @@
 use crate::exchanges::bitfinex::{CandleData, FloatOrInt};
 use chrono::{TimeZone, Utc};
 use comfy_table::{
-    presets::ASCII_NO_BORDERS, presets::UTF8_FULL, Attribute, Cell, CellAlignment, Color,
+    presets::{ASCII_NO_BORDERS, UTF8_FULL}, Attribute, Cell, CellAlignment, Color,
     ContentArrangement, Table,
 };
 
