@@ -230,9 +230,9 @@ fn check_values_exist_on_the_exchange(
     end_date: &str,
 ) {
     let message: String = format!(
-        "\n Data could not be downloaded ❌, please make sure your inputs are correct.\n Symbol: {}\n, Base Currency: {}\n, Interval: {}\n, Start_date: {}\n, End_date: {}",
+        "\n Data could not be downloaded ❌, please make sure your inputs are correct.\n Symbol: \
+         {}\n, Base Currency: {}\n, Interval: {}\n, Start_date: {}\n, End_date: {}",
         &symbol, &base_currency, &interval, &start_date, &end_date,
-
     );
     if !check_symbol(symbol) || !check_base_currency(base_currency) || !check_interval(interval) {
         panic!("{}", &message.red());
