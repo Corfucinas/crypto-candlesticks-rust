@@ -15,20 +15,18 @@ const RATE_LIMIT: f32 = 1.85;
 /// Slice of data to be downloaded.
 const STEP_SIZE: i64 = 86400000;
 
-/**
-Calls the exchange for the data and extends it into a list.
-```text
-Args:
-    ticker: &str: Ticker to download the data.
-    mut start_time: i64: Time in ms on which the data will start.
-    end_time: i64: Time in ms on which the data will finish.
-    interval: &str: Period downloaded.
-    step_size: i64: The size step for each call. Defaults to _STEP_SIZE.
-
-Returns:
-    Vec<CandleData>: A vector of FloatOrInt.
-```
-    */
+/// Calls the exchange for the data and extends it into a list.
+/// ```text
+/// Args:
+/// ticker: &str: Ticker to download the data.
+/// mut start_time: i64: Time in ms on which the data will start.
+/// end_time: i64: Time in ms on which the data will finish.
+/// interval: &str: Period downloaded.
+/// step_size: i64: The size step for each call. Defaults to _STEP_SIZE.
+///
+/// Returns:
+/// Vec<CandleData>: A vector of FloatOrInt.
+/// ```
 fn get_candles(
     ticker: &str,
     mut start_time: i64,
@@ -63,16 +61,14 @@ fn get_candles(
     candle_data
 }
 
-/**
-Converts the data to an excel sheet.
-```text
-Args:
-   filename: String: Filename of the file.
-   interval: &str: Time interval of the data.
-    parsed_data: Vec<CandleData>: A Vector of CandleData struct.
-    ticker: &str: Quote + base asset.
-```
-    */
+/// Converts the data to an excel sheet.
+/// ```text
+/// Args:
+/// filename: String: Filename of the file.
+/// interval: &str: Time interval of the data.
+/// parsed_data: Vec<CandleData>: A Vector of CandleData struct.
+/// ticker: &str: Quote + base asset.
+/// ```
 fn write_to_excel_file(
     filename: String,
     interval: &str,
@@ -168,15 +164,13 @@ pub fn get_data(symbol: &str, base_currency: &str, interval: &str, time_start: i
     println!("{}", buy_me_a_coffee());
 }
 
-/**
-Why not?
-```text
-Message to be displayed at the end.
-
-Returns:
-   &str: ETH address.
-```
-*/
+/// Why not?
+/// ```text
+/// Message to be displayed at the end.
+///
+/// Returns:
+/// &str: ETH address.
+/// ```
 fn buy_me_a_coffee<'a>() -> &'a str {
     "Thank you for using crypto-candlesticks
 Consider supporting your developers

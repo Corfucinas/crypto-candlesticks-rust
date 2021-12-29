@@ -21,12 +21,10 @@ fn info<'a>() -> &'a str {
     If the data is obtained successfully, it will be converted to a .csv and a sqlite3 database."
 }
 
-/**
-Cryptocurrency symbol to download (ie. BTC, ETH, LTC).
-```text
-Full list can be obtained here => https://api.bitfinex.com/v1/symbols
-```
-*/
+/// Cryptocurrency symbol to download (ie. BTC, ETH, LTC).
+/// ```text
+/// Full list can be obtained here => https://api.bitfinex.com/v1/symbols
+/// ```
 fn symbol<'a>() -> Arg<'a> {
     Arg::new("symbol")
         .short('s')
@@ -39,12 +37,10 @@ fn symbol<'a>() -> Arg<'a> {
         .env("symbol")
 }
 
-/**
-Cryptocurrency base trading pair.
-```text
-"USD", "UST", "EUR", "CNHT", "GBP", "JPY", "DAI", "BTC", "EOS", "ETH", "XCH", "USTF0"
-```
-*/
+/// Cryptocurrency base trading pair.
+/// ```text
+/// "USD", "UST", "EUR", "CNHT", "GBP", "JPY", "DAI", "BTC", "EOS", "ETH", "XCH", "USTF0"
+/// ```
 fn base_currency<'a>() -> Arg<'a> {
     Arg::new("base_currency")
         .short('b')
@@ -57,12 +53,10 @@ fn base_currency<'a>() -> Arg<'a> {
         .env("base_currency")
 }
 
-/**
-Interval that will be used to download the data.
-```text
-"1m, 5, 15m, 30m, 1h, 3h, 6h, 12h, 1D, 7D, 14D, 1M"
-```
-*/
+/// Interval that will be used to download the data.
+/// ```text
+/// "1m, 5, 15m, 30m, 1h, 3h, 6h, 12h, 1D, 7D, 14D, 1M"
+/// ```
 fn interval<'a>() -> Arg<'a> {
     Arg::new("interval")
         .short('i')
@@ -75,12 +69,10 @@ fn interval<'a>() -> Arg<'a> {
         .env("interval")
 }
 
-/**
-Date to start downloading the data (ie. YYYY-MM-DD).
-```text
-2018-01-01
-```
-*/
+/// Date to start downloading the data (ie. YYYY-MM-DD).
+/// ```text
+/// 2018-01-01
+/// ```
 fn start_date<'a>() -> Arg<'a> {
     Arg::new("start_date")
         .short('d')
@@ -93,12 +85,10 @@ fn start_date<'a>() -> Arg<'a> {
         .env("start_date")
 }
 
-/**
-Date up to the data will be downloaded (ie. YYYY-MM-DD).
-```text
-2021-01-01
-```
-*/
+/// Date up to the data will be downloaded (ie. YYYY-MM-DD).
+/// ```text
+/// 2021-01-01
+/// ```
 fn end_date<'a>() -> Arg<'a> {
     Arg::new("end_date")
         .short('e')
@@ -116,12 +106,10 @@ fn repo_info<'a>() -> &'a str {
     "Question? Improvements? Feel free to open a PR or issue at: https://github.com/Corfucinas/crypto-candlesticks-rust/issues"
 }
 
-/**
-Validates the quote currency before making the request.
-```text
-symbol: &str: A valid asset listed on the exchange
-```
- */
+/// Validates the quote currency before making the request.
+/// ```text
+/// symbol: &str: A valid asset listed on the exchange
+/// ```
 fn check_symbol(symbol: &str) -> bool {
     match Bitfinex::new().get_symbols() {
         Some(all_symbols) => all_symbols.contains(&symbol.to_lowercase()),
@@ -129,24 +117,20 @@ fn check_symbol(symbol: &str) -> bool {
     }
 }
 
-/**
-Validates the base currency before making the request.
-```text
-base_currency: &str: base currency submitted to the stdin
-```
-*/
+/// Validates the base currency before making the request.
+/// ```text
+/// base_currency: &str: base currency submitted to the stdin
+/// ```
 fn check_base_currency(base_currency: &str) -> bool {
     LIST_OF_CURRENCY
         .iter()
         .any(|base_currency_list| base_currency_list == &base_currency.to_uppercase())
 }
 
-/**
-Validates the interval before making the request.
-```text
-interval: &str: interval submitted to the stdin
-```
-*/
+/// Validates the interval before making the request.
+/// ```text
+/// interval: &str: interval submitted to the stdin
+/// ```
 fn check_interval(interval: &str) -> bool {
     INTERVALS
         .iter()
