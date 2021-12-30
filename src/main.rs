@@ -133,9 +133,7 @@ fn check_base_currency(base_currency: &str) -> bool {
 /// interval: &str: interval submitted to the stdin
 /// ```
 fn check_interval(interval: &str) -> bool {
-    INTERVALS
-        .iter()
-        .any(|interval_list| interval_list == &interval)
+    INTERVALS.iter().any(|interval_list| interval_list == &interval)
 }
 
 fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
@@ -204,13 +202,7 @@ fn verify_arguments_from_app_instance(app_instance: clap::ArgMatches) {
             parsed_start_date,
             parsed_end_date,
         );
-        get_data(
-            symbol,
-            base_currency,
-            interval,
-            parsed_start_date,
-            parsed_end_date,
-        )
+        get_data(symbol, base_currency, interval, parsed_start_date, parsed_end_date)
     } else {
         const EXIT_HELP_MESSAGE: [&str; 2] = [
             "Run with '-- --help' for the arguments",
