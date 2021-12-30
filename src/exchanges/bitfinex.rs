@@ -56,10 +56,7 @@ pub struct Bitfinex<'a> {
 
 impl<'a> Bitfinex<'a> {
     pub fn new() -> Self {
-        Self {
-            api_v1: "https://api.bitfinex.com/v1",
-            api_v2: "https://api.bitfinex.com/v2",
-        }
+        Self { api_v1: "https://api.bitfinex.com/v1", api_v2: "https://api.bitfinex.com/v2" }
     }
 
     /// Downloads the candlestick data for the given period.

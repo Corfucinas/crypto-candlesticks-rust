@@ -11,16 +11,8 @@ use crate::exchanges::bitfinex::{CandleData, FloatOrInt};
 /// Table format to be displayed while data is downloaded.
 pub fn setup_table() -> Table {
     let mut table: Table = Table::new();
-    const TABLE_COLUMNS: [&str; 8] = [
-        "Open",
-        "High",
-        "Low",
-        "Close",
-        "Volume",
-        "Timestamp",
-        "Ticker",
-        "Time",
-    ];
+    const TABLE_COLUMNS: [&str; 8] =
+        ["Open", "High", "Low", "Close", "Volume", "Timestamp", "Ticker", "Time"];
     table
         .load_preset(UTF8_FULL)
         .set_header(TABLE_COLUMNS.iter().map(|column| -> Cell {
@@ -42,21 +34,19 @@ pub fn write_to_column(
     data_downloaded: Vec<CandleData>,
     mut table: Table,
 ) {
-    data_downloaded
-        .into_iter()
-        .for_each(|candle_data: CandleData| {
-            candle_data.0.into_iter().for_each(|single_candle_info| {
-                let datetime: String = Utc
-                    .timestamp_millis(
-                        single_candle_info[0]
-                            .to_string()
-                            .parse()
-                            .expect("Datetime could not be converted from timestamp"),
-                    )
-                    .to_string();
-                insert_rows_to_table(single_candle_info, &mut table, ticker, interval, datetime);
-            });
+    data_downloaded.into_iter().for_each(|candle_data: CandleData| {
+        candle_data.0.into_iter().for_each(|single_candle_info| {
+            let datetime: String = Utc
+                .timestamp_millis(
+                    single_candle_info[0]
+                        .to_string()
+                        .parse()
+                        .expect("Datetime could not be converted from timestamp"),
+                )
+                .to_string();
+            insert_rows_to_table(single_candle_info, &mut table, ticker, interval, datetime);
         });
+    });
     // clear the console
     print!("{esc}c", esc = 27 as char);
     println!("{}", table);

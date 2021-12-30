@@ -12,9 +12,7 @@ use list_of_currency::LIST_OF_CURRENCY;
 
 #[test]
 fn test_quote_currency_succeeds() {
-    let all_symbols: String = Bitfinex::new()
-        .get_symbols()
-        .expect("Could not call Bitfinex.");
+    let all_symbols: String = Bitfinex::new().get_symbols().expect("Could not call Bitfinex.");
     LIST_OF_CURRENCY.iter().for_each(|i| {
         assert_eq!(
             true,
@@ -26,9 +24,7 @@ fn test_quote_currency_succeeds() {
 
 #[test]
 fn test_quote_currency_fails() {
-    let all_symbols: String = Bitfinex::new()
-        .get_symbols()
-        .expect("Could not call Bitfinex.");
+    let all_symbols: String = Bitfinex::new().get_symbols().expect("Could not call Bitfinex.");
     assert_ne!(
         true,
         all_symbols.contains("this is not a currency!"),

@@ -143,10 +143,8 @@ pub fn get_data(symbol: &str, base_currency: &str, interval: &str, time_start: i
         get_candles(&ticker, time_start, time_end, interval, STEP_SIZE);
     let output: String = ticker.clone() + "-" + interval;
 
-    let download_success_message: [CString; 2] = [
-        "Data download completed! 🚀".green(),
-        "Processing data...".yellow(),
-    ];
+    let download_success_message: [CString; 2] =
+        ["Data download completed! 🚀".green(), "Processing data...".yellow()];
     download_success_message.iter().for_each(|success_message| {
         println!("{}", success_message);
     });
