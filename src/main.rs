@@ -5,13 +5,14 @@ mod exchanges;
 mod get_data;
 mod symbols;
 mod text_console;
+use core::panic;
+use std::{error::Error, process, thread, time};
+
 use chrono::{NaiveDate, Utc};
 use clap::{App, Arg};
 use colorful::Colorful;
-use core::panic;
 use exchanges::bitfinex::Bitfinex;
 use get_data::get_data;
-use std::{error::Error, process, thread, time};
 use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
 use time::Duration;
 
@@ -265,8 +266,9 @@ fn check_default_arguments(
 
 #[cfg(test)]
 mod success_tests {
-    use super::main as entry_point;
     use std::env;
+
+    use super::main as entry_point;
 
     #[test]
     fn main_1m() {
@@ -311,8 +313,9 @@ mod success_tests {
 
 #[cfg(test)]
 mod fail_tests {
-    use super::main as entry_point;
     use std::env;
+
+    use super::main as entry_point;
 
     #[test]
     #[should_panic]

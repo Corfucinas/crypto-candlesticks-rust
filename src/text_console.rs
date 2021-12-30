@@ -1,11 +1,12 @@
 //! Print a table to the console.
 
-use crate::exchanges::bitfinex::{CandleData, FloatOrInt};
 use chrono::{TimeZone, Utc};
 use comfy_table::{
     presets::{ASCII_NO_BORDERS, UTF8_FULL},
     Attribute, Cell, CellAlignment, Color, ContentArrangement, Table,
 };
+
+use crate::exchanges::bitfinex::{CandleData, FloatOrInt};
 
 /// Table format to be displayed while data is downloaded.
 pub fn setup_table() -> Table {

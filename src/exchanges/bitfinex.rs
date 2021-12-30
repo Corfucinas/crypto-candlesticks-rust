@@ -1,13 +1,14 @@
 //! Main stuct for the Bitfinex exchange.
 
-use colorful::Colorful;
 use core::fmt;
+use std::{thread, time};
+
+use colorful::Colorful;
 use fmt::{Display, Formatter, Result};
 use reqwest::{blocking, StatusCode};
 use rusqlite::ToSql;
 use serde::Deserialize;
 use simple_excel_writer::{CellValue, ToCellValue};
-use std::{thread, time};
 
 #[derive(Deserialize, Debug, Clone)]
 #[serde(transparent)]
