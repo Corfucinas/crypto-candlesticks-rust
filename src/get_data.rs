@@ -1,14 +1,16 @@
 //! The Crypto candlesticks engine.
+use std::{process, thread, time};
+
+use chrono::{TimeZone, Utc};
+use colorful::{core::color_string::CString, Colorful};
+use simple_excel_writer::{blank, row, CellValue, Row, Sheet, SheetWriter, Workbook};
+use time::Duration;
+
 use crate::{
     database::insert_candlesticks,
     exchanges::bitfinex::{Bitfinex, CandleData},
     text_console::{setup_table, write_to_column},
 };
-use chrono::{TimeZone, Utc};
-use colorful::{core::color_string::CString, Colorful};
-use simple_excel_writer::{blank, row, CellValue, Row, Sheet, SheetWriter, Workbook};
-use std::{process, thread, time};
-use time::Duration;
 
 /// Avoid getting rate limited by Bitfinex.
 const RATE_LIMIT: f32 = 1.85;

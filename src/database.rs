@@ -1,7 +1,8 @@
 //! Sqlite database class.
+use std::process;
+
 use colorful::Colorful;
 use rusqlite::{params, Connection};
-use std::process;
 
 use crate::exchanges::bitfinex::CandleData;
 
