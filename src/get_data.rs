@@ -159,7 +159,7 @@ pub fn get_data(symbol: &str, base_currency: &str, interval: &str, time_start: i
         "----------------------".green(),
     ];
     success_exit_messages.iter().for_each(|failure_message| {
-        println!("{}", failure_message);
+        println!("{failure_message}");
     });
     println!("{}", buy_me_a_coffee());
 }
