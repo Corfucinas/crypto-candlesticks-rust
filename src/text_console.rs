@@ -49,7 +49,7 @@ pub fn write_to_column(
     });
     // clear the console
     print!("{esc}c", esc = 27 as char);
-    println!("{}", table);
+    println!("{table}");
 }
 
 fn insert_rows_to_table(

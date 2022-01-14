@@ -149,7 +149,7 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
 
     let parse_date = |date: &str| -> NaiveDate {
         let date: NaiveDate = NaiveDate::parse_from_str(date, "%F").unwrap_or_else(|_| {
-            eprintln!("{}", &message);
+            eprintln!("{message}");
             process::exit(1);
         });
         if date < earliest {
@@ -249,7 +249,7 @@ fn check_default_arguments(
             "USING DEFAULT VALUES: run --help to know what arguments you can pass";
         println!("{}", DEFAULT_MESSAGE_WARNING.yellow());
         for second in 1..=3 {
-            println!("{}", format!("{}{}", second, "..."));
+            println!("{second}...",);
             thread::sleep(Duration::from_secs(1));
         }
         println!("Starting!");
