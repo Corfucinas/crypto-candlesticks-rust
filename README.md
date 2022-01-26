@@ -1,7 +1,6 @@
 # crypto-candlesticks-rust 📈
 
-[![Ubuntu test](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/ubuntu-tests.yml/badge.svg)](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/ubuntu-tests.yml)
-[![Windows test](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/windows-test.yml/badge.svg)](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/windows-test.yml)
+[![Tests](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/tests.yml/badge.svg)](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/ubuntu-tests.yml)
 [![Docs](https://docs.rs/crypto-candlesticks-rust/badge.svg)](https://docs.rs/crypto-candlesticks-rust/badge.svg)
 
 ---
@@ -14,7 +13,7 @@ I created this project to port my python package [crypto-candlesticks](https://p
 Once the data is downloaded, it will be converted and stored in a `.csv and .sqlite3` for convenient analysis.
 The data will include the `Open, High, Low, Close` of the candles and the `volume` during the `interval` and its `timestamp`.
 
-![gif-animation](https://raw.githubusercontent.com/Corfucinas/crypto-candlesticks-rust/master/media/animation.gif "program-animation-in-gif")
+![gif-animation](https://raw.githubusercontent.com/Corfucinas/crypto-candlesticks-rust/master/media/animation.gif 'program-animation-in-gif')
 
 ## Installation
 

@@ -1,13 +1,20 @@
-name: Ubuntu test
-on: [push]
-
-env:
-  RUST_BACKTRACE: 1
-
+name: Tests
+on:
+  - push
+  - pull_request
 jobs:
   build:
-    name: Create Ubuntu release
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    env:
+      RUST_BACKTRACE: 1
 
     steps:
       - uses: actions/checkout@v2.4.0
@@ -21,33 +28,33 @@ jobs:
         with:
           path: ~/.cargo/registry
           # Add date to the cache to keep it up to date
-          key: ubuntu-latest-stable-cargo-registry-${{ hashFiles('**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
+          key: ${{ matrix.os }}cargo-registry-${{ hashFiles('**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
           # Restore from outdated cache for speed
           restore-keys: |
-            ubuntu-latest-stable-cargo-registry-${{ hashFiles('**/Cargo.toml') }}
-            ubuntu-latest-stable-cargo-registry-
+            ${{ matrix.os }}cargo-registry-${{ hashFiles('**/Cargo.toml') }}
+            ${{ matrix.os }}cargo-registry-
 
       - name: Cache cargo index
         uses: actions/cache@v2.1.7
         with:
           path: ~/.cargo/git
           # Add date to the cache to keep it up to date
-          key: ubuntu-latest-stable-cargo-index-${{ hashFiles('**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
+          key: ${{ matrix.os }}cargo-index-${{ hashFiles('**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
           # Restore from outdated cache for speed
           restore-keys: |
-            ubuntu-latest-stable-cargo-index-${{ hashFiles('**/Cargo.toml') }}
-            ubuntu-latest-stable-cargo-index-
+            ${{ matrix.os }}cargo-index-${{ hashFiles('**/Cargo.toml') }}
+            ${{ matrix.os }}cargo-index-
 
       - name: Cache core cargo target
         uses: actions/cache@v2.1.7
         with:
           path: target
           # Add date to the cache to keep it up to date
-          key: ubuntu-latest-stable-cargo-core-${{ hashFiles('core/**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
+          key: ${{ matrix.os }}cargo-core-${{ hashFiles('core/**/Cargo.toml') }}-${{ env.CURRENT_DATE }}
           # Restore from outdated cache for speed
           restore-keys: |
-            ubuntu-latest-stable-cargo-core-${{ hashFiles('core/**/Cargo.toml') }}
-            ubuntu-latest-stable-cargo-core-
+            ${{ matrix.os }}cargo-core-${{ hashFiles('core/**/Cargo.toml') }}
+            ${{ matrix.os }}cargo-core-
 
       - name: Clippy & Tests
         run: |
