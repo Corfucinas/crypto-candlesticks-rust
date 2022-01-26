@@ -1,6 +1,6 @@
 # crypto-candlesticks-rust 📈
 
-[![Tests](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/tests.yml/badge.svg)](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/ubuntu-tests.yml)
+[![Tests](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/tests.yml/badge.svg)](https://github.com/Corfucinas/crypto-candlesticks-rust/actions/workflows/tests.yml)
 [![Docs](https://docs.rs/crypto-candlesticks-rust/badge.svg)](https://docs.rs/crypto-candlesticks-rust/badge.svg)
 
 ---
