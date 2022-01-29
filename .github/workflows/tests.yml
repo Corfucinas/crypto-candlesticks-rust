@@ -56,6 +56,10 @@ jobs:
             ${{ matrix.os }}-cargo-core-${{ hashFiles('core/**/Cargo.toml') }}
             ${{ matrix.os }}-cargo-core-
 
-      - name: Clippy & Tests
+      - name: Clippy
         run: |
-          cargo clippy --release -- -D clippy::all && cargo test --release
+          cargo clippy --release -- -D clippy::all
+
+      - name: Tests
+        run: |
+          cargo test --release
