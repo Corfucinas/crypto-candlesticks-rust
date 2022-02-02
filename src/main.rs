@@ -1,4 +1,4 @@
-//! Command-line interface for Crypto Candlesticks.
+//! Command-line interface for crypto-candlesticks-rust.
 
 mod database;
 mod exchanges;
@@ -16,8 +16,29 @@ use get_data::get_data;
 use symbols::{intervals::INTERVALS, list_of_currency::LIST_OF_CURRENCY};
 use time::Duration;
 
+fn license<'a>() -> &'a str {
+    "crypto-candlesticks-rust
+    Copyright (C) 2021 Pedro Torres
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>."
+}
+
 /// Info message -- --help.
 fn info<'a>() -> &'a str {
+    println!("{}", license());
+    println!();
+    println!();
     "Download cryptocurrency candlestick data from Bitfinex.
     If the data is obtained successfully, it will be converted to a .csv and a sqlite3 database."
 }
@@ -170,7 +191,6 @@ fn check_and_transform_dates(start_date: &str, end_date: &str) -> (i64, i64) {
 fn main() -> Result<(), &'static dyn Error> {
     verify_arguments_from_app_instance(
         App::new("crypto-candlesticks-rust")
-            .author("Pedro Torres")
             .version("0.1.5")
             .after_help(repo_info())
             .about(info())
