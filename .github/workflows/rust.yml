@@ -1,7 +1,9 @@
-name: Tests
+name: Test
+
 on:
   - push
   - pull_request
+
 jobs:
   build:
     strategy:
@@ -14,14 +16,22 @@ jobs:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
-      RUST_BACKTRACE: 1
+      RUST_BACKTRACE: FULL
+      CARGO_TERM_COLOR: always
 
     steps:
-      - uses: actions/checkout@v2.4.0
-      - name: install stable
+      - name: Install rust stable toolchain
         uses: actions-rs/toolchain@v1
         with:
+          profile: minimal
           toolchain: stable
+          components: clippy
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
 
       - name: Cache cargo registry
         uses: actions/cache@v2.1.7
