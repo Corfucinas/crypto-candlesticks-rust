@@ -31,6 +31,7 @@ codegen-units = 1
 lto = true
 opt-level = 'z' # Optimize for size.
 panic = "abort"
+strip = "symbols"
 
 [dependencies]
 chrono = "0.4.19"
